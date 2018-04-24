@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\QuickStart;
 
@@ -76,7 +75,7 @@ $eventStore->create($singleStream);
  */
 $eventStore->attach(
     ActionEventEmitterEventStore::EVENT_APPEND_TO, // InMemoryEventStore provides event hooks
-    function (ActionEvent $actionEvent): void {
+    function (ActionEvent $actionEvent) {
         /**
          * In the *commit.post* action event a plugin has access to
          * all recorded events which were added in the current committed transaction.

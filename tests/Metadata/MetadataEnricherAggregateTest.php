@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Metadata;
 
@@ -25,7 +24,7 @@ class MetadataEnricherAggregateTest extends TestCase
     /**
      * @test
      */
-    public function it_aggregates_metadata_enrichers(): void
+    public function it_aggregates_metadata_enrichers()
     {
         // Mocks
         $metadataEnricher1 = $this->prophesize(MetadataEnricher::class);
@@ -68,7 +67,7 @@ class MetadataEnricherAggregateTest extends TestCase
     /**
      * @test
      */
-    public function it_only_accept_correct_instances(): void
+    public function it_only_accept_correct_instances()
     {
         $this->expectException(InvalidArgumentException::class);
 

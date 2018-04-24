@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Metadata;
 
@@ -32,7 +31,7 @@ final class MetadataEnricherAggregate implements MetadataEnricher
         $this->metadataEnrichers = $metadataEnrichers;
     }
 
-    public function enrich(Message $message): Message
+    public function enrich(Message $message)
     {
         foreach ($this->metadataEnrichers as $metadataEnricher) {
             $message = $metadataEnricher->enrich($message);

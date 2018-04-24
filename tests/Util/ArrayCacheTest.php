@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Util;
 
@@ -20,7 +19,7 @@ class ArrayCacheTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_invalid_size_given(): void
+    public function it_throws_exception_when_invalid_size_given()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -30,7 +29,7 @@ class ArrayCacheTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_too_high_position_given(): void
+    public function it_throws_exception_when_too_high_position_given()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -44,7 +43,7 @@ class ArrayCacheTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_too_low_position_given(): void
+    public function it_throws_exception_when_too_low_position_given()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -56,7 +55,7 @@ class ArrayCacheTest extends TestCase
     /**
      * @test
      */
-    public function it_gets_checks_for_values(): void
+    public function it_gets_checks_for_values()
     {
         $cache = new ArrayCache(4);
 

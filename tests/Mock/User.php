@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Mock;
 
@@ -43,7 +42,7 @@ class User
      */
     private $version = 0;
 
-    public static function create(string $name, string $email): User
+    public static function create($name, $email)
     {
         $self = new self();
 
@@ -59,7 +58,7 @@ class User
         return $self;
     }
 
-    public static function reconstituteFromHistory(\Iterator $historyEvents): User
+    public static function reconstituteFromHistory(\Iterator $historyEvents)
     {
         $self = new self();
 
@@ -72,27 +71,27 @@ class User
     {
     }
 
-    public function getVersion(): int
+    public function getVersion()
     {
         return $this->version;
     }
 
-    public function getId(): Uuid
+    public function getId()
     {
         return $this->userId;
     }
 
-    public function name(): string
+    public function name()
     {
         return $this->name;
     }
 
-    public function email(): string
+    public function email()
     {
         return $this->email;
     }
 
-    public function changeName(string $newName)
+    public function changeName($newName)
     {
         $this->recordThat(UsernameChanged::with(
             [
@@ -103,14 +102,14 @@ class User
         ));
     }
 
-    private function recordThat(TestDomainEvent $domainEvent): void
+    private function recordThat(TestDomainEvent $domainEvent)
     {
         $this->version += 1;
         $this->recordedEvents[] = $domainEvent;
         $this->apply($domainEvent);
     }
 
-    public function apply(TestDomainEvent $event): void
+    public function apply(TestDomainEvent $event)
     {
         if ($event instanceof UserCreated) {
             $this->whenUserCreated($event);
@@ -121,7 +120,7 @@ class User
         }
     }
 
-    private function whenUserCreated(UserCreated $userCreated): void
+    private function whenUserCreated(UserCreated $userCreated)
     {
         $payload = $userCreated->payload();
 
@@ -130,12 +129,12 @@ class User
         $this->email = $payload['email'];
     }
 
-    private function whenUsernameChanged(UsernameChanged $usernameChanged): void
+    private function whenUsernameChanged(UsernameChanged $usernameChanged)
     {
         $this->name = $usernameChanged->payload()['new_name'];
     }
 
-    public function popRecordedEvents(): array
+    public function popRecordedEvents()
     {
         $recordedEvents = $this->recordedEvents;
 
@@ -147,7 +146,7 @@ class User
     /**
      * @param DomainEvent[] $streamEvents
      */
-    public function replay(Iterator $streamEvents): void
+    public function replay(Iterator $streamEvents)
     {
         foreach ($streamEvents as $streamEvent) {
             $this->apply($streamEvent);
@@ -155,7 +154,7 @@ class User
         }
     }
 
-    private function nextVersion(): int
+    private function nextVersion()
     {
         return $this->version + 1;
     }

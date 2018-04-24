@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Projection;
 
@@ -32,21 +31,21 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_projection_names(): void
+    public function it_fetches_projection_names()
     {
         $projections = [];
 
         try {
             for ($i = 0; $i < 50; $i++) {
                 $projection = $this->projectionManager->createProjection('user-' . $i);
-                $projection->fromAll()->whenAny(function (): void {
+                $projection->fromAll()->whenAny(function () {
                 })->run(false);
                 $projections[] = $projection;
             }
 
             for ($i = 0; $i < 20; $i++) {
                 $projection = $this->projectionManager->createProjection(uniqid('rand'));
-                $projection->fromAll()->whenAny(function (): void {
+                $projection->fromAll()->whenAny(function () {
                 })->run(false);
                 $projections[] = $projection;
             }
@@ -74,22 +73,22 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_projection_names_with_filter(): void
+    public function it_fetches_projection_names_with_filter()
     {
         $projection = $this->projectionManager->createProjection('user-1');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $projection = $this->projectionManager->createProjection('user-2');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $projection = $this->projectionManager->createProjection('rand-1');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $projection = $this->projectionManager->createProjection('user-3');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $this->assertSame(['user-1'], $this->projectionManager->fetchProjectionNames('user-1'));
@@ -104,26 +103,26 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_projection_names_sorted(): void
+    public function it_fetches_projection_names_sorted()
     {
         $projection = $this->projectionManager->createProjection('user-100');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $projection = $this->projectionManager->createProjection('user-21');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $projection = $this->projectionManager->createProjection('rand-5');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $projection = $this->projectionManager->createProjection('user-10');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $projection = $this->projectionManager->createProjection('user-1');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $this->assertEquals(
@@ -135,7 +134,7 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_fetching_projection_names_using_invalid_limit(): void
+    public function it_throws_exception_when_fetching_projection_names_using_invalid_limit()
     {
         $this->expectException(OutOfRangeException::class);
         $this->expectExceptionMessage('Invalid limit "-1" given. Must be greater than 0.');
@@ -146,7 +145,7 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_fetching_projection_names_using_invalid_offset(): void
+    public function it_throws_exception_when_fetching_projection_names_using_invalid_offset()
     {
         $this->expectException(OutOfRangeException::class);
         $this->expectExceptionMessage('Invalid offset "-1" given. Must be greater or equal than 0.');
@@ -157,17 +156,17 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_projection_names_using_regex(): void
+    public function it_fetches_projection_names_using_regex()
     {
         for ($i = 0; $i < 50; $i++) {
             $projection = $this->projectionManager->createProjection('user-' . $i);
-            $projection->fromAll()->whenAny(function (): void {
+            $projection->fromAll()->whenAny(function () {
             })->run(false);
         }
 
         for ($i = 0; $i < 20; $i++) {
             $projection = $this->projectionManager->createProjection(uniqid('rand'));
-            $projection->fromAll()->whenAny(function (): void {
+            $projection->fromAll()->whenAny(function () {
             })->run(false);
         }
 
@@ -181,26 +180,26 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_projection_names_sorted_using_regex(): void
+    public function it_fetches_projection_names_sorted_using_regex()
     {
         $projection = $this->projectionManager->createProjection('user-100');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $projection = $this->projectionManager->createProjection('user-21');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $projection = $this->projectionManager->createProjection('rand-5');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $projection = $this->projectionManager->createProjection('user-10');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $projection = $this->projectionManager->createProjection('user-1');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $this->assertEquals(
@@ -212,7 +211,7 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_fetching_projection_names_using_regex_with_invalid_limit(): void
+    public function it_throws_exception_when_fetching_projection_names_using_regex_with_invalid_limit()
     {
         $this->expectException(OutOfRangeException::class);
         $this->expectExceptionMessage('Invalid limit "-1" given. Must be greater than 0.');
@@ -223,7 +222,7 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_fetching_projection_names_using_regex_with_invalid_offset(): void
+    public function it_throws_exception_when_fetching_projection_names_using_regex_with_invalid_offset()
     {
         $this->expectException(OutOfRangeException::class);
         $this->expectExceptionMessage('Invalid offset "-1" given. Must be greater or equal than 0.');
@@ -234,7 +233,7 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_fetching_projection_names_using_invalid_regex(): void
+    public function it_throws_exception_when_fetching_projection_names_using_invalid_regex()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid regex pattern given');
@@ -245,7 +244,7 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_asked_for_unknown_projection_status(): void
+    public function it_throws_exception_when_asked_for_unknown_projection_status()
     {
         $this->expectException(ProjectionNotFound::class);
 
@@ -255,7 +254,7 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_asked_for_unknown_projection_stream_positions(): void
+    public function it_throws_exception_when_asked_for_unknown_projection_stream_positions()
     {
         $this->expectException(ProjectionNotFound::class);
 
@@ -265,7 +264,7 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_asked_for_unknown_projection_state(): void
+    public function it_throws_exception_when_asked_for_unknown_projection_state()
     {
         $this->expectException(ProjectionNotFound::class);
 
@@ -275,10 +274,10 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_projection_status(): void
+    public function it_fetches_projection_status()
     {
         $projection = $this->projectionManager->createProjection('test-projection');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $this->assertSame(ProjectionStatus::IDLE(), $this->projectionManager->fetchProjectionStatus('test-projection'));
@@ -287,10 +286,10 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_projection_stream_positions(): void
+    public function it_fetches_projection_stream_positions()
     {
         $projection = $this->projectionManager->createProjection('test-projection');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $this->assertSame([], $this->projectionManager->fetchProjectionStreamPositions('test-projection'));
@@ -299,10 +298,10 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_projection_state(): void
+    public function it_fetches_projection_state()
     {
         $projection = $this->projectionManager->createProjection('test-projection');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $this->assertSame([], $this->projectionManager->fetchProjectionState('test-projection'));
@@ -311,7 +310,7 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_trying_to_delete_non_existing_projection(): void
+    public function it_throws_exception_when_trying_to_delete_non_existing_projection()
     {
         $this->expectException(ProjectionNotFound::class);
 
@@ -321,7 +320,7 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_trying_to_reset_non_existing_projection(): void
+    public function it_throws_exception_when_trying_to_reset_non_existing_projection()
     {
         $this->expectException(ProjectionNotFound::class);
 
@@ -331,7 +330,7 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_trying_to_stop_non_existing_projection(): void
+    public function it_throws_exception_when_trying_to_stop_non_existing_projection()
     {
         $this->expectException(ProjectionNotFound::class);
 
@@ -341,10 +340,10 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_fail_deleting_twice(): void
+    public function it_does_not_fail_deleting_twice()
     {
         $projection = $this->projectionManager->createProjection('test-projection');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $this->projectionManager->deleteProjection('test-projection', false);
@@ -356,10 +355,10 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_fail_resetting_twice(): void
+    public function it_does_not_fail_resetting_twice()
     {
         $projection = $this->projectionManager->createProjection('test-projection');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $this->projectionManager->resetProjection('test-projection');
@@ -371,10 +370,10 @@ abstract class AbstractProjectionManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_fail_stopping_twice(): void
+    public function it_does_not_fail_stopping_twice()
     {
         $projection = $this->projectionManager->createProjection('test-projection');
-        $projection->fromAll()->whenAny(function (): void {
+        $projection->fromAll()->whenAny(function () {
         })->run(false);
 
         $this->projectionManager->stopProjection('test-projection');

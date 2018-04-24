@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore;
 
@@ -19,11 +18,11 @@ use Prooph\EventStore\Exception\TransactionNotStarted;
 
 class TransactionalActionEventEmitterEventStore extends ActionEventEmitterEventStore implements TransactionalEventStore
 {
-    public const EVENT_BEGIN_TRANSACTION = 'beginTransaction';
-    public const EVENT_COMMIT = 'commit';
-    public const EVENT_ROLLBACK = 'rollback';
+    const EVENT_BEGIN_TRANSACTION = 'beginTransaction';
+    const EVENT_COMMIT = 'commit';
+    const EVENT_ROLLBACK = 'rollback';
 
-    public const ALL_EVENTS = [
+    const ALL_EVENTS = [
         self::EVENT_APPEND_TO,
         self::EVENT_CREATE,
         self::EVENT_LOAD,
@@ -50,7 +49,7 @@ class TransactionalActionEventEmitterEventStore extends ActionEventEmitterEventS
     {
         parent::__construct($eventStore, $actionEventEmitter);
 
-        $actionEventEmitter->attachListener(self::EVENT_BEGIN_TRANSACTION, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_BEGIN_TRANSACTION, function (ActionEvent $event) {
             try {
                 $this->eventStore->beginTransaction();
             } catch (TransactionAlreadyStarted $exception) {
@@ -58,7 +57,7 @@ class TransactionalActionEventEmitterEventStore extends ActionEventEmitterEventS
             }
         });
 
-        $actionEventEmitter->attachListener(self::EVENT_COMMIT, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_COMMIT, function (ActionEvent $event) {
             try {
                 $this->eventStore->commit();
             } catch (TransactionNotStarted $exception) {
@@ -66,7 +65,7 @@ class TransactionalActionEventEmitterEventStore extends ActionEventEmitterEventS
             }
         });
 
-        $actionEventEmitter->attachListener(self::EVENT_ROLLBACK, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_ROLLBACK, function (ActionEvent $event) {
             try {
                 $this->eventStore->rollback();
             } catch (TransactionNotStarted $exception) {
@@ -75,7 +74,7 @@ class TransactionalActionEventEmitterEventStore extends ActionEventEmitterEventS
         });
     }
 
-    public function beginTransaction(): void
+    public function beginTransaction()
     {
         $event = $this->actionEventEmitter->getNewActionEvent(self::EVENT_BEGIN_TRANSACTION, $this);
 
@@ -86,7 +85,7 @@ class TransactionalActionEventEmitterEventStore extends ActionEventEmitterEventS
         }
     }
 
-    public function commit(): void
+    public function commit()
     {
         $event = $this->actionEventEmitter->getNewActionEvent(self::EVENT_COMMIT, $this);
 
@@ -97,7 +96,7 @@ class TransactionalActionEventEmitterEventStore extends ActionEventEmitterEventS
         }
     }
 
-    public function rollback(): void
+    public function rollback()
     {
         $event = $this->actionEventEmitter->getNewActionEvent(self::EVENT_ROLLBACK, $this);
 
@@ -118,7 +117,7 @@ class TransactionalActionEventEmitterEventStore extends ActionEventEmitterEventS
         return $this->eventStore->transactional($callable);
     }
 
-    public function inTransaction(): bool
+    public function inTransaction()
     {
         return $this->eventStore->inTransaction();
     }

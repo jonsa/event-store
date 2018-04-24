@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Mock;
 
@@ -20,14 +19,14 @@ class TestDomainEvent extends DomainEvent implements PayloadConstructable
 {
     use PayloadTrait;
 
-    public static function with(array $payload, int $version): TestDomainEvent
+    public static function with(array $payload, $version)
     {
         $event = new static($payload);
 
         return $event->withVersion($version);
     }
 
-    public static function withPayloadAndSpecifiedCreatedAt(array $payload, int $version, \DateTimeImmutable $createdAt): TestDomainEvent
+    public static function withPayloadAndSpecifiedCreatedAt(array $payload, $version, \DateTimeImmutable $createdAt)
     {
         $event = new static($payload);
         $event->createdAt = $createdAt;
@@ -35,12 +34,12 @@ class TestDomainEvent extends DomainEvent implements PayloadConstructable
         return $event->withVersion($version);
     }
 
-    public function withVersion(int $version): TestDomainEvent
+    public function withVersion($version)
     {
         return $this->withAddedMetadata('_aggregate_version', $version);
     }
 
-    public function version(): int
+    public function version()
     {
         return $this->metadata['_aggregate_version'];
     }

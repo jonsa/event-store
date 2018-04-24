@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Metadata;
 
@@ -31,7 +30,7 @@ final class MetadataEnricherPlugin extends AbstractPlugin
         $this->metadataEnricher = $metadataEnricher;
     }
 
-    public function attachToEventStore(ActionEventEmitterEventStore $eventStore): void
+    public function attachToEventStore(ActionEventEmitterEventStore $eventStore)
     {
         $this->listenerHandlers[] = $eventStore->attach(
             ActionEventEmitterEventStore::EVENT_CREATE,
@@ -49,7 +48,7 @@ final class MetadataEnricherPlugin extends AbstractPlugin
     /**
      * Add event metadata on event store createStream.
      */
-    public function onEventStoreCreateStream(ActionEvent $createEvent): void
+    public function onEventStoreCreateStream(ActionEvent $createEvent)
     {
         $stream = $createEvent->getParam('stream');
 
@@ -66,7 +65,7 @@ final class MetadataEnricherPlugin extends AbstractPlugin
     /**
      * Add event metadata on event store appendToStream.
      */
-    public function onEventStoreAppendToStream(ActionEvent $appendToStreamEvent): void
+    public function onEventStoreAppendToStream(ActionEvent $appendToStreamEvent)
     {
         $streamEvents = $appendToStreamEvent->getParam('streamEvents');
 
@@ -83,7 +82,7 @@ final class MetadataEnricherPlugin extends AbstractPlugin
      * This method takes domain events as argument which are going to be added
      * to the event stream and add the metadata via the MetadataEnricher.
      */
-    private function handleRecordedEvents(Iterator $events): Iterator
+    private function handleRecordedEvents(Iterator $events)
     {
         $enrichedEvents = [];
 

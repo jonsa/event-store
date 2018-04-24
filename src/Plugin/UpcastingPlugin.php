@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Plugin;
 
@@ -20,7 +19,7 @@ use Prooph\EventStore\Upcasting\UpcastingIterator;
 
 final class UpcastingPlugin extends AbstractPlugin
 {
-    public const ACTION_EVENT_PRIORITY = -1000;
+    const ACTION_EVENT_PRIORITY = -1000;
 
     /**
      * @var Upcaster
@@ -32,9 +31,9 @@ final class UpcastingPlugin extends AbstractPlugin
         $this->upcaster = $upcaster;
     }
 
-    public function attachToEventStore(ActionEventEmitterEventStore $eventStore): void
+    public function attachToEventStore(ActionEventEmitterEventStore $eventStore)
     {
-        $upcaster = function (ActionEvent $actionEvent): void {
+        $upcaster = function (ActionEvent $actionEvent) {
             $streamEvents = $actionEvent->getParam('streamEvents');
 
             if (! $streamEvents instanceof Iterator) {

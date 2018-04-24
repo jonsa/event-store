@@ -79,7 +79,7 @@ class IssuerMetadataEnricher implements MetadataEnricher
 {
     // ...
 
-    public function enrich(Message $event): Message
+    public function enrich(Message $event)
     {
         if ($this->currentUser) {
             $event = $event

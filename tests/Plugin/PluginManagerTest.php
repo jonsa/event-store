@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Plugin;
 
@@ -24,7 +23,7 @@ class PluginManagerTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function an_invokable_plugin_is_loaded_by_plugin_manager_and_attached_to_event_store_by_configuration(): void
+    public function an_invokable_plugin_is_loaded_by_plugin_manager_and_attached_to_event_store_by_configuration()
     {
         $container = $this->prophesize(ContainerInterface::class);
         $container->get('eventlogger')->willReturn(new EventLoggerPlugin())->shouldBeCalled();

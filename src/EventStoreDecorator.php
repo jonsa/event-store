@@ -8,11 +8,10 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore;
 
 interface EventStoreDecorator extends EventStore
 {
-    public function getInnerEventStore(): EventStore;
+    public function getInnerEventStore();
 }

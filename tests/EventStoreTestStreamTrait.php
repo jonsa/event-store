@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore;
 
@@ -19,7 +18,7 @@ use ProophTest\EventStore\Mock\UserCreated;
 
 trait EventStoreTestStreamTrait
 {
-    protected function getTestStream(): Stream
+    protected function getTestStream()
     {
         $streamEvent = UserCreated::with(
             ['name' => 'Alex', 'email' => 'contact@prooph.de'],

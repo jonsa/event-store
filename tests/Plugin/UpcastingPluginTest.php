@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Plugin;
 
@@ -28,19 +27,9 @@ class UpcastingPluginTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_attaches_to_event_store(): void
+    public function it_attaches_to_event_store()
     {
-        $upcaster = new class() extends SingleEventUpcaster {
-            protected function canUpcast(Message $message): bool
-            {
-                return true;
-            }
-
-            protected function doUpcast(Message $message): array
-            {
-                return [$message->withAddedMetadata('key', 'value')];
-            }
-        };
+        $upcaster = new UpcastingPluginTest_SingleEventUpcaster;
 
         $plugin = new UpcastingPlugin($upcaster);
         $plugin->attachToEventStore($this->eventStore);
@@ -88,7 +77,7 @@ class UpcastingPluginTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_ignores_when_no_iterator_in_result(): void
+    public function it_ignores_when_no_iterator_in_result()
     {
         $this->expectException(StreamNotFound::class);
 
@@ -96,5 +85,18 @@ class UpcastingPluginTest extends ActionEventEmitterEventStoreTestCase
         $plugin->attachToEventStore($this->eventStore);
 
         $this->eventStore->load(new StreamName('user'));
+    }
+}
+
+class UpcastingPluginTest_SingleEventUpcaster extends SingleEventUpcaster
+{
+    protected function canUpcast(Message $message)
+    {
+        return true;
+    }
+
+    protected function doUpcast(Message $message)
+    {
+        return [$message->withAddedMetadata('key', 'value')];
     }
 }

@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Exception;
 
@@ -16,7 +15,7 @@ use Prooph\EventStore\StreamName;
 
 final class StreamNotFound extends RuntimeException
 {
-    public static function with(StreamName $streamName): StreamNotFound
+    public static function with(StreamName $streamName)
     {
         return new self(
             sprintf(

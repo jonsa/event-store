@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Projection;
 
@@ -31,7 +30,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
      */
     protected $eventStore;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         $this->eventStore = new InMemoryEventStore();
         $this->projectionManager = new InMemoryProjectionManager($this->eventStore);
@@ -40,7 +39,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
     /**
      * @test
      */
-    public function it_throws_exception_when_trying_to_run_two_projections_at_the_same_time(): void
+    public function it_throws_exception_when_trying_to_run_two_projections_at_the_same_time()
     {
         $this->markTestSkipped('InMemoryProjectionManager cannot guard agains concurrent projections');
     }
@@ -48,7 +47,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
     /**
      * @test
      */
-    public function it_deletes_projection_during_run_when_it_was_deleted_from_outside(): void
+    public function it_deletes_projection_during_run_when_it_was_deleted_from_outside()
     {
         $this->markTestSkipped('InMemoryProjectionManager cannot delete projections');
     }
@@ -56,7 +55,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
     /**
      * @test
      */
-    public function it_deletes_projection_before_start_when_it_was_deleted_from_outside(): void
+    public function it_deletes_projection_before_start_when_it_was_deleted_from_outside()
     {
         $this->markTestSkipped('InMemoryProjectionManager cannot delete projections');
     }
@@ -64,7 +63,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
     /**
      * @test
      */
-    public function it_deletes_projection_incl_emitting_events_before_start_when_it_was_deleted_from_outside(): void
+    public function it_deletes_projection_incl_emitting_events_before_start_when_it_was_deleted_from_outside()
     {
         $this->markTestSkipped('InMemoryProjectionManager cannot delete projections');
     }
@@ -72,7 +71,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
     /**
      * @test
      */
-    public function it_deletes_projection_incl_emitted_events_during_run_when_it_was_deleted_from_outside(): void
+    public function it_deletes_projection_incl_emitted_events_during_run_when_it_was_deleted_from_outside()
     {
         $this->markTestSkipped('InMemoryProjectionManager cannot delete projections');
     }
@@ -80,7 +79,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
     /**
      * @test
      */
-    public function it_resets_projection_before_start_when_it_was_reset_from_outside(): void
+    public function it_resets_projection_before_start_when_it_was_reset_from_outside()
     {
         $this->markTestSkipped('InMemoryProjectionManager cannot reset projections');
     }
@@ -88,7 +87,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
     /**
      * @test
      */
-    public function it_resets_projection_during_run_when_it_was_reset_from_outside(): void
+    public function it_resets_projection_during_run_when_it_was_reset_from_outside()
     {
         $this->markTestSkipped('InMemoryProjectionManager cannot reset projections');
     }
@@ -96,7 +95,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
     /**
      * @test
      */
-    public function it_stops_when_projection_before_start_when_it_was_stopped_from_outside(): void
+    public function it_stops_when_projection_before_start_when_it_was_stopped_from_outside()
     {
         $this->markTestSkipped('InMemoryProjectionManager cannot stop projections');
     }
@@ -104,7 +103,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
     /**
      * @test
      */
-    public function it_stops_projection_during_run_when_it_was_stopped_from_outside(): void
+    public function it_stops_projection_during_run_when_it_was_stopped_from_outside()
     {
         $this->markTestSkipped('InMemoryProjectionManager cannot stop projections');
     }
@@ -112,7 +111,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
     /**
      * @test
      */
-    public function it_throws_exception_when_unknown_event_store_instance_passed(): void
+    public function it_throws_exception_when_unknown_event_store_instance_passed()
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -124,7 +123,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
     /**
      * @test
      */
-    public function it_throws_exception_when_invalid_wrapped_event_store_instance_passed(): void
+    public function it_throws_exception_when_invalid_wrapped_event_store_instance_passed()
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -138,7 +137,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
     /**
      * @test
      */
-    public function it_throws_exception_when_invalid_cache_size_given(): void
+    public function it_throws_exception_when_invalid_cache_size_given()
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -148,7 +147,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
     /**
      * @test
      */
-    public function it_throws_exception_when_invalid_sleep_given(): void
+    public function it_throws_exception_when_invalid_sleep_given()
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -158,7 +157,7 @@ class InMemoryEventStoreProjectorTest extends AbstractEventStoreProjectorTest
     /**
      * @test
      */
-    public function it_dispatches_pcntl_signals_when_enabled(): void
+    public function it_dispatches_pcntl_signals_when_enabled()
     {
         if (! extension_loaded('pcntl')) {
             $this->markTestSkipped('The PCNTL extension is not available.');

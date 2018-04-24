@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Metadata;
 
@@ -18,17 +17,17 @@ class MetadataMatcher
 {
     private $data = [];
 
-    public function data(): array
+    public function data()
     {
         return $this->data;
     }
 
     public function withMetadataMatch(
-        string $field,
+        $field,
         Operator $operator,
         $value,
         FieldType $fieldType = null
-    ): MetadataMatcher {
+    ) {
         $this->validateValue($operator, $value);
 
         if (null === $fieldType) {
@@ -46,7 +45,7 @@ class MetadataMatcher
      * @param mixed $value
      * @throws InvalidArgumentException
      */
-    private function validateValue(Operator $operator, $value): void
+    private function validateValue(Operator $operator, $value)
     {
         if ($operator->is(Operator::IN()) || $operator->is(Operator::NOT_IN())
         ) {

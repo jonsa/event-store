@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Container;
 
@@ -37,7 +36,7 @@ class InMemoryEventStoreFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_event_store_with_default_event_emitter(): void
+    public function it_creates_event_store_with_default_event_emitter()
     {
         $config['prooph']['event_store']['default'] = [];
 
@@ -53,7 +52,7 @@ class InMemoryEventStoreFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_event_store_without_event_emitter(): void
+    public function it_creates_event_store_without_event_emitter()
     {
         $config['prooph']['event_store']['default'] = ['wrap_action_event_emitter' => false];
 
@@ -69,7 +68,7 @@ class InMemoryEventStoreFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_non_transactional_event_store_without_event_emitter(): void
+    public function it_creates_non_transactional_event_store_without_event_emitter()
     {
         $config['prooph']['event_store']['default'] = ['wrap_action_event_emitter' => false, 'transactional' => false];
 
@@ -85,7 +84,7 @@ class InMemoryEventStoreFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_read_only_event_store(): void
+    public function it_creates_read_only_event_store()
     {
         $config['prooph']['event_store']['default'] = ['wrap_action_event_emitter' => false, 'read_only' => true];
 
@@ -101,7 +100,7 @@ class InMemoryEventStoreFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_event_store_with_default_event_emitter_via_callstatic(): void
+    public function it_creates_event_store_with_default_event_emitter_via_callstatic()
     {
         $config['prooph']['event_store']['another'] = [];
 
@@ -117,7 +116,7 @@ class InMemoryEventStoreFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_non_transactional_event_store_with_non_transactional_event_emitter_via_callstatic(): void
+    public function it_creates_non_transactional_event_store_with_non_transactional_event_emitter_via_callstatic()
     {
         $config['prooph']['event_store']['another'] = ['transactional' => false];
 
@@ -133,7 +132,7 @@ class InMemoryEventStoreFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_injects_custom_event_emitter(): void
+    public function it_injects_custom_event_emitter()
     {
         $config['prooph']['event_store']['default']['event_emitter'] = 'event_emitter';
 
@@ -152,7 +151,7 @@ class InMemoryEventStoreFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_injects_plugins(): void
+    public function it_injects_plugins()
     {
         $config['prooph']['event_store']['default']['plugins'][] = 'plugin';
 
@@ -172,7 +171,7 @@ class InMemoryEventStoreFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_invalid_plugin_configured(): void
+    public function it_throws_exception_when_invalid_plugin_configured()
     {
         $this->expectException(ConfigurationException::class);
         $this->expectExceptionMessage('Plugin plugin does not implement the Plugin interface');
@@ -192,7 +191,7 @@ class InMemoryEventStoreFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_injects_metadata_enrichers(): void
+    public function it_injects_metadata_enrichers()
     {
         $config['prooph']['event_store']['default']['metadata_enrichers'][] = 'metadata_enricher1';
         $config['prooph']['event_store']['default']['metadata_enrichers'][] = 'metadata_enricher2';
@@ -237,7 +236,7 @@ class InMemoryEventStoreFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_invalid_metadata_enricher_configured(): void
+    public function it_throws_exception_when_invalid_metadata_enricher_configured()
     {
         $this->expectException(ConfigurationException::class);
         $this->expectExceptionMessage('Metadata enricher foobar does not implement the MetadataEnricher interface');
@@ -255,7 +254,7 @@ class InMemoryEventStoreFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_invalid_container_given_to_callstatic(): void
+    public function it_throws_exception_when_invalid_container_given_to_callstatic()
     {
         $this->expectException(InvalidArgumentException::class);
 

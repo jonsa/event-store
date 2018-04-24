@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Upcasting;
 
@@ -22,7 +21,7 @@ class UpcastingIteratorTest extends TestCase
     /**
      * @test
      */
-    public function it_iterates(): void
+    public function it_iterates()
     {
         $upcastedMessage1 = $this->prophesize(Message::class);
         $upcastedMessage1 = $upcastedMessage1->reveal();
@@ -87,7 +86,7 @@ class UpcastingIteratorTest extends TestCase
     /**
      * @test
      */
-    public function it_iterates_on_iterator_with_removed_messages_only(): void
+    public function it_iterates_on_iterator_with_removed_messages_only()
     {
         $message = $this->prophesize(Message::class);
         $message->metadata()->willReturn(['foo' => 'baz'])->shouldBeCalled();
@@ -105,7 +104,7 @@ class UpcastingIteratorTest extends TestCase
     /**
      * @test
      */
-    public function it_iterates_over_array_iterator(): void
+    public function it_iterates_over_array_iterator()
     {
         $iterator = new \ArrayIterator();
 
@@ -119,7 +118,7 @@ class UpcastingIteratorTest extends TestCase
     /**
      * @test
      */
-    public function it_iterates_over_empty_iterator(): void
+    public function it_iterates_over_empty_iterator()
     {
         $iterator = new \EmptyIterator();
 
@@ -130,22 +129,25 @@ class UpcastingIteratorTest extends TestCase
         $this->assertNull($upcastingIterator->current());
     }
 
-    protected function createUpcaster(): SingleEventUpcaster
+    protected function createUpcaster()
     {
-        return new class() extends SingleEventUpcaster {
-            protected function canUpcast(Message $message): bool
-            {
-                return $message->metadata() !== ['foo' => 'bar'];
-            }
+        return new UpcastingIteratorTest_SingleEventUpcaster;
+    }
+}
 
-            protected function doUpcast(Message $message): array
-            {
-                if ($message->metadata() === ['foo' => 'baz']) {
-                    return [];
-                }
+class UpcastingIteratorTest_SingleEventUpcaster extends SingleEventUpcaster
+{
+    protected function canUpcast(Message $message)
+    {
+        return $message->metadata() !== ['foo' => 'bar'];
+    }
 
-                return [$message->withAddedMetadata('key', 'value'), $message->withAddedMetadata('key', 'another_value')];
-            }
-        };
+    protected function doUpcast(Message $message)
+    {
+        if ($message->metadata() === ['foo' => 'baz']) {
+            return [];
+        }
+
+        return [$message->withAddedMetadata('key', 'value'), $message->withAddedMetadata('key', 'another_value')];
     }
 }

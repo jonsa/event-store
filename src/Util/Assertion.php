@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Util;
 
@@ -29,7 +28,7 @@ class Assertion extends \Assert\Assertion
         $code,
         $propertyPath = null,
         array $constraints = []
-    ): InvalidArgumentException {
+    ) {
         $exceptionClass = static::$exceptionClass;
 
         return new $exceptionClass($message, $code);

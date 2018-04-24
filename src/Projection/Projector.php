@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Projection;
 
@@ -17,34 +16,34 @@ use Prooph\Common\Messaging\Message;
 
 interface Projector
 {
-    public const OPTION_CACHE_SIZE = 'cache_size';
-    public const OPTION_SLEEP = 'sleep';
-    public const OPTION_PERSIST_BLOCK_SIZE = 'persist_block_size';
-    public const OPTION_LOCK_TIMEOUT_MS = 'lock_timeout_ms';
-    public const OPTION_PCNTL_DISPATCH = 'trigger_pcntl_dispatch';
-    public const OPTION_UPDATE_LOCK_THRESHOLD = 'update_lock_threshold';
+    const OPTION_CACHE_SIZE = 'cache_size';
+    const OPTION_SLEEP = 'sleep';
+    const OPTION_PERSIST_BLOCK_SIZE = 'persist_block_size';
+    const OPTION_LOCK_TIMEOUT_MS = 'lock_timeout_ms';
+    const OPTION_PCNTL_DISPATCH = 'trigger_pcntl_dispatch';
+    const OPTION_UPDATE_LOCK_THRESHOLD = 'update_lock_threshold';
 
-    public const DEFAULT_CACHE_SIZE = 1000;
-    public const DEFAULT_SLEEP = 100000;
-    public const DEFAULT_PERSIST_BLOCK_SIZE = 1000;
-    public const DEFAULT_LOCK_TIMEOUT_MS = 1000;
-    public const DEFAULT_PCNTL_DISPATCH = false;
-    public const DEFAULT_UPDATE_LOCK_THRESHOLD = 0;
+    const DEFAULT_CACHE_SIZE = 1000;
+    const DEFAULT_SLEEP = 100000;
+    const DEFAULT_PERSIST_BLOCK_SIZE = 1000;
+    const DEFAULT_LOCK_TIMEOUT_MS = 1000;
+    const DEFAULT_PCNTL_DISPATCH = false;
+    const DEFAULT_UPDATE_LOCK_THRESHOLD = 0;
 
     /**
      * The callback has to return an array
      */
-    public function init(Closure $callback): Projector;
+    public function init(Closure $callback);
 
-    public function fromStream(string $streamName): Projector;
+    public function fromStream($streamName);
 
-    public function fromStreams(string ...$streamNames): Projector;
+    public function fromStreams(...$streamNames);
 
-    public function fromCategory(string $name): Projector;
+    public function fromCategory($name);
 
-    public function fromCategories(string ...$names): Projector;
+    public function fromCategories(...$names);
 
-    public function fromAll(): Projector;
+    public function fromAll();
 
     /**
      * For example:
@@ -60,7 +59,7 @@ interface Projector
      *     }
      * ])
      */
-    public function when(array $handlers): Projector;
+    public function when(array $handlers);
 
     /**
      * For example:
@@ -69,21 +68,21 @@ interface Projector
      *     return $state;
      * }
      */
-    public function whenAny(Closure $closure): Projector;
+    public function whenAny(Closure $closure);
 
-    public function reset(): void;
+    public function reset();
 
-    public function stop(): void;
+    public function stop();
 
-    public function getState(): array;
+    public function getState();
 
-    public function getName(): string;
+    public function getName();
 
-    public function emit(Message $event): void;
+    public function emit(Message $event);
 
-    public function linkTo(string $streamName, Message $event): void;
+    public function linkTo($streamName, Message $event);
 
-    public function delete(bool $deleteEmittedEvents): void;
+    public function delete($deleteEmittedEvents);
 
-    public function run(bool $keepRunning = true): void;
+    public function run($keepRunning = true);
 }

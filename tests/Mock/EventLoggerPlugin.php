@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Mock;
 
@@ -29,11 +28,11 @@ class EventLoggerPlugin extends AbstractPlugin
         $this->loggedStreamEvents = new \ArrayIterator();
     }
 
-    public function attachToEventStore(ActionEventEmitterEventStore $eventStore): void
+    public function attachToEventStore(ActionEventEmitterEventStore $eventStore)
     {
         $this->listenerHandlers[] = $eventStore->attach(
             ActionEventEmitterEventStore::EVENT_CREATE,
-            function (ActionEvent $event): void {
+            function (ActionEvent $event) {
                 $this->loggedStreamEvents = $event->getParam('stream')->streamEvents();
             },
             -10000
@@ -41,14 +40,14 @@ class EventLoggerPlugin extends AbstractPlugin
 
         $this->listenerHandlers[] = $eventStore->attach(
             ActionEventEmitterEventStore::EVENT_APPEND_TO,
-            function (ActionEvent $event): void {
+            function (ActionEvent $event) {
                 $this->loggedStreamEvents = $event->getParam('streamEvents', new \ArrayIterator());
             },
             -10000
         );
     }
 
-    public function getLoggedStreamEvents(): Iterator
+    public function getLoggedStreamEvents()
     {
         return $this->loggedStreamEvents;
     }

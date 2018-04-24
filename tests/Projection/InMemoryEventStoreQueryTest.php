@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Projection;
 
@@ -31,7 +30,7 @@ class InMemoryEventStoreQueryTest extends AbstractEventStoreQueryTest
      */
     protected $eventStore;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         $this->eventStore = new InMemoryEventStore();
         $this->projectionManager = new InMemoryProjectionManager($this->eventStore);
@@ -40,7 +39,7 @@ class InMemoryEventStoreQueryTest extends AbstractEventStoreQueryTest
     /**
      * @test
      */
-    public function it_throws_exception_when_unknown_event_store_instance_passed(): void
+    public function it_throws_exception_when_unknown_event_store_instance_passed()
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -52,7 +51,7 @@ class InMemoryEventStoreQueryTest extends AbstractEventStoreQueryTest
     /**
      * @test
      */
-    public function it_throws_exception_when_invalid_wrapped_event_store_instance_passed(): void
+    public function it_throws_exception_when_invalid_wrapped_event_store_instance_passed()
     {
         $this->expectException(InvalidArgumentException::class);
 

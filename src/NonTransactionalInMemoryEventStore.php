@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore;
 
@@ -35,7 +34,7 @@ final class NonTransactionalInMemoryEventStore implements EventStore
      */
     private $cachedStreams = [];
 
-    public function create(Stream $stream): void
+    public function create(Stream $stream)
     {
         $streamName = $stream->streamName();
         $streamNameString = $streamName->toString();
@@ -51,7 +50,7 @@ final class NonTransactionalInMemoryEventStore implements EventStore
         $this->streams[$streamNameString]['metadata'] = $stream->metadata();
     }
 
-    public function appendTo(StreamName $streamName, Iterator $streamEvents): void
+    public function appendTo(StreamName $streamName, Iterator $streamEvents)
     {
         $streamNameString = $streamName->toString();
 
@@ -69,10 +68,10 @@ final class NonTransactionalInMemoryEventStore implements EventStore
 
     public function load(
         StreamName $streamName,
-        int $fromNumber = 1,
-        int $count = null,
+        $fromNumber = 1,
+        $count = null,
         MetadataMatcher $metadataMatcher = null
-    ): Iterator {
+    ) {
         Assertion::greaterOrEqualThan($fromNumber, 1);
         Assertion::nullOrGreaterOrEqualThan($count, 1);
 
@@ -112,10 +111,10 @@ final class NonTransactionalInMemoryEventStore implements EventStore
 
     public function loadReverse(
         StreamName $streamName,
-        int $fromNumber = null,
-        int $count = null,
+        $fromNumber = null,
+        $count = null,
         MetadataMatcher $metadataMatcher = null
-    ): Iterator {
+    ) {
         if (null === $fromNumber) {
             $fromNumber = PHP_INT_MAX;
         }
@@ -157,7 +156,7 @@ final class NonTransactionalInMemoryEventStore implements EventStore
         return new ArrayIterator($streamEvents);
     }
 
-    public function delete(StreamName $streamName): void
+    public function delete(StreamName $streamName)
     {
         $streamNameString = $streamName->toString();
 
@@ -168,12 +167,12 @@ final class NonTransactionalInMemoryEventStore implements EventStore
         }
     }
 
-    public function hasStream(StreamName $streamName): bool
+    public function hasStream(StreamName $streamName)
     {
         return isset($this->streams[$streamName->toString()]);
     }
 
-    public function fetchStreamMetadata(StreamName $streamName): array
+    public function fetchStreamMetadata(StreamName $streamName)
     {
         if (! isset($this->streams[$streamName->toString()])) {
             throw StreamNotFound::with($streamName);
@@ -182,7 +181,7 @@ final class NonTransactionalInMemoryEventStore implements EventStore
         return $this->streams[$streamName->toString()]['metadata'];
     }
 
-    public function updateStreamMetadata(StreamName $streamName, array $newMetadata): void
+    public function updateStreamMetadata(StreamName $streamName, array $newMetadata)
     {
         if (! isset($this->streams[$streamName->toString()])) {
             throw StreamNotFound::with($streamName);
@@ -192,11 +191,11 @@ final class NonTransactionalInMemoryEventStore implements EventStore
     }
 
     public function fetchStreamNames(
-        ?string $filter,
-        ?MetadataMatcher $metadataMatcher,
-        int $limit = 20,
-        int $offset = 0
-    ): array {
+        $filter,
+        MetadataMatcher $metadataMatcher = null,
+        $limit = 20,
+        $offset = 0
+    ) {
         $result = [];
 
         $skipped = 0;
@@ -241,11 +240,11 @@ final class NonTransactionalInMemoryEventStore implements EventStore
     }
 
     public function fetchStreamNamesRegex(
-        string $filter,
-        ?MetadataMatcher $metadataMatcher,
-        int $limit = 20,
-        int $offset = 0
-    ): array {
+        $filter,
+        MetadataMatcher $metadataMatcher = null,
+        $limit = 20,
+        $offset = 0
+    ) {
         if (false === @preg_match("/$filter/", '')) {
             throw new Exception\InvalidArgumentException('Invalid regex pattern given');
         }
@@ -277,7 +276,7 @@ final class NonTransactionalInMemoryEventStore implements EventStore
         return $result;
     }
 
-    public function fetchCategoryNames(?string $filter, int $limit = 20, int $offset = 0): array
+    public function fetchCategoryNames($filter, $limit = 20, $offset = 0)
     {
         $result = [];
 
@@ -287,7 +286,7 @@ final class NonTransactionalInMemoryEventStore implements EventStore
         $categories = array_unique(
             array_reduce(
                 array_keys($this->streams),
-                function (array $result, string $streamName): array {
+                function (array $result, $streamName) {
                     if (preg_match('/^(.+)-.+$/', $streamName, $matches)) {
                         $result[] = $matches[1];
                     }
@@ -323,7 +322,7 @@ final class NonTransactionalInMemoryEventStore implements EventStore
         return $result;
     }
 
-    public function fetchCategoryNamesRegex(string $filter, int $limit = 20, int $offset = 0): array
+    public function fetchCategoryNamesRegex($filter, $limit = 20, $offset = 0)
     {
         if (false === @preg_match("/$filter/", '')) {
             throw new Exception\InvalidArgumentException('Invalid regex pattern given');
@@ -337,7 +336,7 @@ final class NonTransactionalInMemoryEventStore implements EventStore
         $categories = array_unique(
             array_reduce(
                 array_keys($this->streams),
-                function (array $result, string $streamName): array {
+                function (array $result, $streamName) {
                     if (preg_match('/^(.+)-.+$/', $streamName, $matches)) {
                         $result[] = $matches[1];
                     }
@@ -371,7 +370,7 @@ final class NonTransactionalInMemoryEventStore implements EventStore
         return $result;
     }
 
-    private function matchesMetadata(MetadataMatcher $metadataMatcher, array $metadata): bool
+    private function matchesMetadata(MetadataMatcher $metadataMatcher, array $metadata)
     {
         foreach ($metadataMatcher->data() as $match) {
             if (! FieldType::METADATA()->is($match['fieldType'])) {
@@ -392,7 +391,7 @@ final class NonTransactionalInMemoryEventStore implements EventStore
         return true;
     }
 
-    private function matchesMessagesProperty(MetadataMatcher $metadataMatcher, Message $message): bool
+    private function matchesMessagesProperty(MetadataMatcher $metadataMatcher, Message $message)
     {
         foreach ($metadataMatcher->data() as $match) {
             if (! FieldType::MESSAGE_PROPERTY()->is($match['fieldType'])) {
@@ -423,7 +422,7 @@ final class NonTransactionalInMemoryEventStore implements EventStore
         return true;
     }
 
-    private function match(Operator $operator, $value, $expected): bool
+    private function match(Operator $operator, $value, $expected)
     {
         switch ($operator) {
             case Operator::EQUALS():

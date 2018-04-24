@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Upcasting;
 
@@ -40,7 +39,7 @@ final class UpcastingIterator implements Iterator
         $this->innerIterator = $iterator;
     }
 
-    public function current(): ?Message
+    public function current()
     {
         if (! empty($this->storedMessages)) {
             return reset($this->storedMessages);
@@ -71,7 +70,7 @@ final class UpcastingIterator implements Iterator
         return reset($this->storedMessages);
     }
 
-    public function next(): void
+    public function next()
     {
         ++$this->position;
 
@@ -102,7 +101,7 @@ final class UpcastingIterator implements Iterator
         return $this->position;
     }
 
-    public function valid(): bool
+    public function valid()
     {
         if ($this->innerIterator instanceof \EmptyIterator) {
             return false;
@@ -111,7 +110,7 @@ final class UpcastingIterator implements Iterator
         return null !== $this->current();
     }
 
-    public function rewind(): void
+    public function rewind()
     {
         $this->storedMessages = [];
         $this->innerIterator->rewind();

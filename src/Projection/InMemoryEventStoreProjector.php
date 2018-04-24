@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Projection;
 
@@ -108,10 +107,10 @@ final class InMemoryEventStoreProjector implements Projector
 
     public function __construct(
         EventStore $eventStore,
-        string $name,
-        int $cacheSize,
-        int $sleep,
-        bool $triggerPcntlSignalDispatch = false
+        $name,
+        $cacheSize,
+        $sleep,
+        $triggerPcntlSignalDispatch = false
     ) {
         if ($cacheSize < 1) {
             throw new Exception\InvalidArgumentException('cache size must be a positive integer');
@@ -143,7 +142,7 @@ final class InMemoryEventStoreProjector implements Projector
         $this->innerEventStore = $eventStore;
     }
 
-    public function init(Closure $callback): Projector
+    public function init(Closure $callback)
     {
         if (null !== $this->initCallback) {
             throw new Exception\RuntimeException('Projection already initialized');
@@ -162,7 +161,7 @@ final class InMemoryEventStoreProjector implements Projector
         return $this;
     }
 
-    public function fromStream(string $streamName): Projector
+    public function fromStream($streamName)
     {
         if (null !== $this->query) {
             throw new Exception\RuntimeException('From was already called');
@@ -173,7 +172,7 @@ final class InMemoryEventStoreProjector implements Projector
         return $this;
     }
 
-    public function fromStreams(string ...$streamNames): Projector
+    public function fromStreams(...$streamNames)
     {
         if (null !== $this->query) {
             throw new Exception\RuntimeException('From was already called');
@@ -186,7 +185,7 @@ final class InMemoryEventStoreProjector implements Projector
         return $this;
     }
 
-    public function fromCategory(string $name): Projector
+    public function fromCategory($name)
     {
         if (null !== $this->query) {
             throw new Exception\RuntimeException('From was already called');
@@ -197,7 +196,7 @@ final class InMemoryEventStoreProjector implements Projector
         return $this;
     }
 
-    public function fromCategories(string ...$names): Projector
+    public function fromCategories(...$names)
     {
         if (null !== $this->query) {
             throw new Exception\RuntimeException('From was already called');
@@ -210,7 +209,7 @@ final class InMemoryEventStoreProjector implements Projector
         return $this;
     }
 
-    public function fromAll(): Projector
+    public function fromAll()
     {
         if (null !== $this->query) {
             throw new Exception\RuntimeException('From was already called');
@@ -221,7 +220,7 @@ final class InMemoryEventStoreProjector implements Projector
         return $this;
     }
 
-    public function when(array $handlers): Projector
+    public function when(array $handlers)
     {
         if (null !== $this->handler || ! empty($this->handlers)) {
             throw new Exception\RuntimeException('When was already called');
@@ -242,7 +241,7 @@ final class InMemoryEventStoreProjector implements Projector
         return $this;
     }
 
-    public function whenAny(Closure $handler): Projector
+    public function whenAny(Closure $handler)
     {
         if (null !== $this->handler || ! empty($this->handlers)) {
             throw new Exception\RuntimeException('When was already called');
@@ -253,22 +252,22 @@ final class InMemoryEventStoreProjector implements Projector
         return $this;
     }
 
-    public function stop(): void
+    public function stop()
     {
         $this->isStopped = true;
     }
 
-    public function getState(): array
+    public function getState()
     {
         return $this->state;
     }
 
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
 
-    public function emit(Message $event): void
+    public function emit(Message $event)
     {
         if (! $this->streamCreated || ! $this->eventStore->hasStream(new StreamName($this->name))) {
             $this->eventStore->create(new Stream(new StreamName($this->name), new ArrayIterator()));
@@ -278,7 +277,7 @@ final class InMemoryEventStoreProjector implements Projector
         $this->linkTo($this->name, $event);
     }
 
-    public function linkTo(string $streamName, Message $event): void
+    public function linkTo($streamName, Message $event)
     {
         $sn = new StreamName($streamName);
 
@@ -296,7 +295,7 @@ final class InMemoryEventStoreProjector implements Projector
         }
     }
 
-    public function reset(): void
+    public function reset()
     {
         $this->streamPositions = [];
 
@@ -321,7 +320,7 @@ final class InMemoryEventStoreProjector implements Projector
         $this->state = [];
     }
 
-    public function run(bool $keepRunning = true): void
+    public function run($keepRunning = true)
     {
         if (null === $this->query
             || (null === $this->handler && empty($this->handlers))
@@ -369,7 +368,7 @@ final class InMemoryEventStoreProjector implements Projector
         $this->status = ProjectionStatus::IDLE();
     }
 
-    public function delete(bool $deleteEmittedEvents): void
+    public function delete($deleteEmittedEvents)
     {
         if ($deleteEmittedEvents) {
             try {
@@ -382,7 +381,7 @@ final class InMemoryEventStoreProjector implements Projector
         $this->streamPositions = [];
     }
 
-    private function handleStreamWithSingleHandler(string $streamName, Iterator $events): void
+    private function handleStreamWithSingleHandler($streamName, Iterator $events)
     {
         $this->currentStreamName = $streamName;
         $handler = $this->handler;
@@ -403,7 +402,7 @@ final class InMemoryEventStoreProjector implements Projector
         }
     }
 
-    private function handleStreamWithHandlers(string $streamName, Iterator $events): void
+    private function handleStreamWithHandlers($streamName, Iterator $events)
     {
         $this->currentStreamName = $streamName;
 
@@ -428,48 +427,12 @@ final class InMemoryEventStoreProjector implements Projector
         }
     }
 
-    private function createHandlerContext(?string &$streamName)
+    private function createHandlerContext(&$streamName)
     {
-        return new class($this, $streamName) {
-            /**
-             * @var Projector
-             */
-            private $projector;
-
-            /**
-             * @var ?string
-             */
-            private $streamName;
-
-            public function __construct(Projector $projector, ?string &$streamName)
-            {
-                $this->projector = $projector;
-                $this->streamName = &$streamName;
-            }
-
-            public function stop(): void
-            {
-                $this->projector->stop();
-            }
-
-            public function linkTo(string $streamName, Message $event): void
-            {
-                $this->projector->linkTo($streamName, $event);
-            }
-
-            public function emit(Message $event): void
-            {
-                $this->projector->emit($event);
-            }
-
-            public function streamName(): ?string
-            {
-                return $this->streamName;
-            }
-        };
+        return new InMemoryEventStoreProjector_HandlerContext($this, $streamName);
     }
 
-    private function prepareStreamPositions(): void
+    private function prepareStreamPositions()
     {
         $reflectionProperty = new \ReflectionProperty(get_class($this->innerEventStore), 'streams');
         $reflectionProperty->setAccessible(true);
@@ -512,5 +475,44 @@ final class InMemoryEventStoreProjector implements Projector
         }
 
         $this->streamPositions = array_merge($streamPositions, $this->streamPositions);
+    }
+}
+
+class InMemoryEventStoreProjector_HandlerContext
+{
+    /**
+     * @var Projector
+     */
+    private $projector;
+
+    /**
+     * @var ?string
+     */
+    private $streamName;
+
+    public function __construct(Projector $projector, &$streamName)
+    {
+        $this->projector = $projector;
+        $this->streamName = &$streamName;
+    }
+
+    public function stop()
+    {
+        $this->projector->stop();
+    }
+
+    public function linkTo($streamName, Message $event)
+    {
+        $this->projector->linkTo($streamName, $event);
+    }
+
+    public function emit(Message $event)
+    {
+        $this->projector->emit($event);
+    }
+
+    public function streamName()
+    {
+        return $this->streamName;
     }
 }

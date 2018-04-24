@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Mock;
 
@@ -24,12 +23,12 @@ class ReadModelMock extends AbstractReadModel
      */
     private $stack = [];
 
-    public function insert(string $key, $value): void
+    public function insert($key, $value)
     {
         $this->storage[$key] = $value;
     }
 
-    public function update(string $key, $value): void
+    public function update($key, $value)
     {
         if (! array_key_exists($key, $this->storage)) {
             throw new InvalidArgumentException('Invalid key given');
@@ -38,32 +37,32 @@ class ReadModelMock extends AbstractReadModel
         $this->storage[$key] = $value;
     }
 
-    public function hasKey(string $key): bool
+    public function hasKey($key)
     {
         return is_array($this->storage) && array_key_exists($key, $this->storage);
     }
 
-    public function read(string $key)
+    public function read($key)
     {
         return $this->storage[$key];
     }
 
-    public function init(): void
+    public function init()
     {
         $this->storage = [];
     }
 
-    public function isInitialized(): bool
+    public function isInitialized()
     {
         return is_array($this->storage);
     }
 
-    public function reset(): void
+    public function reset()
     {
         $this->storage = [];
     }
 
-    public function delete(): void
+    public function delete()
     {
         $this->storage = null;
     }

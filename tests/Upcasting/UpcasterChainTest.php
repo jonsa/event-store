@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Upcasting;
 
@@ -23,7 +22,7 @@ class UpcasterChainTest extends TestCase
     /**
      * @test
      */
-    public function it_chains_upcasts(): void
+    public function it_chains_upcasts()
     {
         $upcastedMessage3 = $this->prophesize(Message::class);
         $upcastedMessage3 = $upcastedMessage3->reveal();
@@ -54,33 +53,40 @@ class UpcasterChainTest extends TestCase
         $this->assertSame($upcastedMessage3, $messages[1]);
     }
 
-    protected function createUpcasterWhoCanUpcast(): SingleEventUpcaster
+    protected function createUpcasterWhoCanUpcast()
     {
-        return new class() extends SingleEventUpcaster {
-            protected function canUpcast(Message $message): bool
-            {
-                return true;
-            }
-
-            protected function doUpcast(Message $message): array
-            {
-                return [$message->withAddedMetadata('key', 'value')];
-            }
-        };
+        return new UpcasterChainTest_SingleEventUpcaster(function (Message $message)
+        {
+            return [$message->withAddedMetadata('key', 'value')];
+        });
     }
 
-    protected function createUpcasterWhoCanAlsoUpcast(): SingleEventUpcaster
+    protected function createUpcasterWhoCanAlsoUpcast()
     {
-        return new class() extends SingleEventUpcaster {
-            protected function canUpcast(Message $message): bool
-            {
-                return true;
-            }
+        return new UpcasterChainTest_SingleEventUpcaster(function (Message $message)
+        {
+            return [$message->withAddedMetadata('key', 'other_value'), $message->withAddedMetadata('key', 'yet_another_value')];
+        });
+    }
+}
 
-            protected function doUpcast(Message $message): array
-            {
-                return [$message->withAddedMetadata('key', 'other_value'), $message->withAddedMetadata('key', 'yet_another_value')];
-            }
-        };
+class UpcasterChainTest_SingleEventUpcaster extends SingleEventUpcaster
+{
+    private $upcast;
+
+    public function __construct(callable $upcast)
+    {
+        $this->upcast = $upcast;
+    }
+
+    protected function canUpcast(Message $message)
+    {
+        return true;
+    }
+
+    protected function doUpcast(Message $message)
+    {
+        $upcast = $this->upcast;
+        return $upcast($message);
     }
 }

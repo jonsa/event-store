@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Upcasting;
 
@@ -16,7 +15,7 @@ use Prooph\Common\Messaging\Message;
 
 final class NoOpEventUpcaster implements Upcaster
 {
-    public function upcast(Message $message): array
+    public function upcast(Message $message)
     {
         return [$message];
     }

@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Mock;
 
@@ -43,7 +42,7 @@ class Post
      */
     private $version = 0;
 
-    public static function create(string $text, string $email): Post
+    public static function create($text, $email)
     {
         $self = new self();
 
@@ -63,7 +62,7 @@ class Post
      * @param Message[] $historyEvents
      * @return Post
      */
-    public static function reconstituteFromHistory(array $historyEvents): Post
+    public static function reconstituteFromHistory(array $historyEvents)
     {
         $self = new self();
 
@@ -79,30 +78,30 @@ class Post
     /**
      * @return Uuid
      */
-    public function getId(): Uuid
+    public function getId()
     {
         return $this->postId;
     }
 
-    public function text(): string
+    public function text()
     {
         return $this->text;
     }
 
-    private function recordThat(TestDomainEvent $domainEvent): void
+    private function recordThat(TestDomainEvent $domainEvent)
     {
         $this->recordedEvents[] = $domainEvent;
         $this->apply($domainEvent);
     }
 
-    public function apply(TestDomainEvent $event): void
+    public function apply(TestDomainEvent $event)
     {
         if ($event instanceof PostCreated) {
             $this->whenPostCreated($event);
         }
     }
 
-    private function whenPostCreated(PostCreated $postCreated): void
+    private function whenPostCreated(PostCreated $postCreated)
     {
         $payload = $postCreated->payload();
 
@@ -111,7 +110,7 @@ class Post
         $this->email = $payload['email'];
     }
 
-    public function popRecordedEvents(): array
+    public function popRecordedEvents()
     {
         $recordedEvents = $this->recordedEvents;
 
@@ -123,7 +122,7 @@ class Post
     /**
      * @param DomainEvent[] $streamEvents
      */
-    private function replay($streamEvents): void
+    private function replay($streamEvents)
     {
         foreach ($streamEvents as $streamEvent) {
             $this->apply($streamEvent);
@@ -131,7 +130,7 @@ class Post
         }
     }
 
-    private function nextVersion(): int
+    private function nextVersion()
     {
         return ++$this->version;
     }

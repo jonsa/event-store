@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Metadata;
 
@@ -27,13 +26,13 @@ use MabeEnum\Enum;
  */
 class Operator extends Enum
 {
-    public const EQUALS = '=';
-    public const GREATER_THAN = '>';
-    public const GREATER_THAN_EQUALS = '>=';
-    public const IN = 'in';
-    public const LOWER_THAN = '<';
-    public const LOWER_THAN_EQUALS = '<=';
-    public const NOT_EQUALS = '!=';
-    public const NOT_IN = 'nin';
-    public const REGEX = 'regex';
+    const EQUALS = '=';
+    const GREATER_THAN = '>';
+    const GREATER_THAN_EQUALS = '>=';
+    const IN = 'in';
+    const LOWER_THAN = '<';
+    const LOWER_THAN_EQUALS = '<=';
+    const NOT_EQUALS = '!=';
+    const NOT_IN = 'nin';
+    const REGEX = 'regex';
 }

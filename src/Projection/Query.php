@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Projection;
 
@@ -19,17 +18,17 @@ interface Query
     /**
      * The callback has to return an array
      */
-    public function init(Closure $callback): Query;
+    public function init(Closure $callback);
 
-    public function fromStream(string $streamName): Query;
+    public function fromStream($streamName);
 
-    public function fromStreams(string ...$streamNames): Query;
+    public function fromStreams(...$streamNames);
 
-    public function fromCategory(string $name): Query;
+    public function fromCategory($name);
 
-    public function fromCategories(string ...$names): Query;
+    public function fromCategories(...$names);
 
-    public function fromAll(): Query;
+    public function fromAll();
 
     /**
      * For example:
@@ -45,7 +44,7 @@ interface Query
      *     }
      * ])
      */
-    public function when(array $handlers): Query;
+    public function when(array $handlers);
 
     /**
      * For example:
@@ -54,13 +53,13 @@ interface Query
      *     return $state;
      * }
      */
-    public function whenAny(Closure $closure): Query;
+    public function whenAny(Closure $closure);
 
-    public function reset(): void;
+    public function reset();
 
-    public function run(): void;
+    public function run();
 
-    public function stop(): void;
+    public function stop();
 
-    public function getState(): array;
+    public function getState();
 }

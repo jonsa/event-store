@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore;
 
@@ -30,7 +29,7 @@ class TransactionalActionEventEmitterEventStoreTest extends TestCase
      */
     protected $eventStore;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         $eventEmitter = new ProophActionEventEmitter(TransactionalActionEventEmitterEventStore::ALL_EVENTS);
 
@@ -40,7 +39,7 @@ class TransactionalActionEventEmitterEventStoreTest extends TestCase
     /**
      * @test
      */
-    public function it_works_transactional(): void
+    public function it_works_transactional()
     {
         $streamName = $this->prophesize(StreamName::class);
         $streamName->toString()->willReturn('test')->shouldBeCalled();
@@ -65,7 +64,7 @@ class TransactionalActionEventEmitterEventStoreTest extends TestCase
     /**
      * @test
      */
-    public function it_rolls_back_transaction(): void
+    public function it_rolls_back_transaction()
     {
         $streamName = $this->prophesize(StreamName::class);
         $streamName->toString()->willReturn('test')->shouldBeCalled();
@@ -92,7 +91,7 @@ class TransactionalActionEventEmitterEventStoreTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_no_transaction_started_on_commit(): void
+    public function it_throws_exception_when_no_transaction_started_on_commit()
     {
         $this->expectException(TransactionNotStarted::class);
 
@@ -102,7 +101,7 @@ class TransactionalActionEventEmitterEventStoreTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_no_transaction_started_on_rollback(): void
+    public function it_throws_exception_when_no_transaction_started_on_rollback()
     {
         $this->expectException(TransactionNotStarted::class);
 
@@ -112,7 +111,7 @@ class TransactionalActionEventEmitterEventStoreTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_transaction_already_started(): void
+    public function it_throws_exception_when_transaction_already_started()
     {
         $this->expectException(TransactionAlreadyStarted::class);
 
@@ -123,7 +122,7 @@ class TransactionalActionEventEmitterEventStoreTest extends TestCase
     /**
      * @test
      */
-    public function it_wraps_up_code_in_transaction_properly(): void
+    public function it_wraps_up_code_in_transaction_properly()
     {
         $transactionResult = $this->eventStore->transactional(function () {
             $this->eventStore->create($this->getTestStream());

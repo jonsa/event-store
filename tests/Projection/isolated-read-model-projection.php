@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 use Prooph\EventStore\InMemoryEventStore;
 use Prooph\EventStore\Projection\InMemoryProjectionManager;
@@ -19,32 +18,35 @@ use Prooph\EventStore\StreamName;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-$readModel = new class() implements ReadModel {
-    public function init(): void
+class IsolatedReadModelProjection_ReadModel implements ReadModel
+{
+    public function init()
     {
     }
 
-    public function isInitialized(): bool
+    public function isInitialized()
     {
         return true;
     }
 
-    public function reset(): void
+    public function reset()
     {
     }
 
-    public function delete(): void
+    public function delete()
     {
     }
 
-    public function stack(string $operation, ...$args): void
+    public function stack($operation, ...$args)
     {
     }
 
-    public function persist(): void
+    public function persist()
     {
     }
-};
+}
+
+$readModel = new IsolatedReadModelProjection_ReadModel;
 
 $eventStore = new InMemoryEventStore();
 $eventStore->create(new Stream(new StreamName('user-123'), new ArrayIterator([])));

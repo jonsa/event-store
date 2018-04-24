@@ -8,21 +8,20 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Projection;
 
 interface ReadModel
 {
-    public function init(): void;
+    public function init();
 
-    public function isInitialized(): bool;
+    public function isInitialized();
 
-    public function reset(): void;
+    public function reset();
 
-    public function delete(): void;
+    public function delete();
 
-    public function stack(string $operation, ...$args): void;
+    public function stack($operation, ...$args);
 
-    public function persist(): void;
+    public function persist();
 }

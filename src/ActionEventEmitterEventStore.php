@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore;
 
@@ -24,20 +23,20 @@ use Prooph\EventStore\Util\Assertion;
 
 class ActionEventEmitterEventStore implements EventStoreDecorator
 {
-    public const EVENT_APPEND_TO = 'appendTo';
-    public const EVENT_CREATE = 'create';
-    public const EVENT_LOAD = 'load';
-    public const EVENT_LOAD_REVERSE = 'loadReverse';
-    public const EVENT_DELETE = 'delete';
-    public const EVENT_HAS_STREAM = 'hasStream';
-    public const EVENT_FETCH_STREAM_METADATA = 'fetchStreamMetadata';
-    public const EVENT_UPDATE_STREAM_METADATA = 'updateStreamMetadata';
-    public const EVENT_FETCH_STREAM_NAMES = 'fetchStreamNames';
-    public const EVENT_FETCH_STREAM_NAMES_REGEX = 'fetchStreamNamesRegex';
-    public const EVENT_FETCH_CATEGORY_NAMES = 'fetchCategoryNames';
-    public const EVENT_FETCH_CATEGORY_NAMES_REGEX = 'fetchCategoryNamesRegex';
+    const EVENT_APPEND_TO = 'appendTo';
+    const EVENT_CREATE = 'create';
+    const EVENT_LOAD = 'load';
+    const EVENT_LOAD_REVERSE = 'loadReverse';
+    const EVENT_DELETE = 'delete';
+    const EVENT_HAS_STREAM = 'hasStream';
+    const EVENT_FETCH_STREAM_METADATA = 'fetchStreamMetadata';
+    const EVENT_UPDATE_STREAM_METADATA = 'updateStreamMetadata';
+    const EVENT_FETCH_STREAM_NAMES = 'fetchStreamNames';
+    const EVENT_FETCH_STREAM_NAMES_REGEX = 'fetchStreamNamesRegex';
+    const EVENT_FETCH_CATEGORY_NAMES = 'fetchCategoryNames';
+    const EVENT_FETCH_CATEGORY_NAMES_REGEX = 'fetchCategoryNamesRegex';
 
-    public const ALL_EVENTS = [
+    const ALL_EVENTS = [
         self::EVENT_APPEND_TO,
         self::EVENT_CREATE,
         self::EVENT_LOAD,
@@ -67,7 +66,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
         $this->eventStore = $eventStore;
         $this->actionEventEmitter = $actionEventEmitter;
 
-        $actionEventEmitter->attachListener(self::EVENT_CREATE, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_CREATE, function (ActionEvent $event) {
             $stream = $event->getParam('stream');
 
             try {
@@ -77,7 +76,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
             }
         });
 
-        $actionEventEmitter->attachListener(self::EVENT_APPEND_TO, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_APPEND_TO, function (ActionEvent $event) {
             $streamName = $event->getParam('streamName');
             $streamEvents = $event->getParam('streamEvents');
 
@@ -90,7 +89,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
             }
         });
 
-        $actionEventEmitter->attachListener(self::EVENT_LOAD, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_LOAD, function (ActionEvent $event) {
             $streamName = $event->getParam('streamName');
             $fromNumber = $event->getParam('fromNumber');
             $count = $event->getParam('count');
@@ -104,7 +103,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
             }
         });
 
-        $actionEventEmitter->attachListener(self::EVENT_LOAD_REVERSE, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_LOAD_REVERSE, function (ActionEvent $event) {
             $streamName = $event->getParam('streamName');
             $fromNumber = $event->getParam('fromNumber');
             $count = $event->getParam('count');
@@ -118,7 +117,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
             }
         });
 
-        $actionEventEmitter->attachListener(self::EVENT_DELETE, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_DELETE, function (ActionEvent $event) {
             $streamName = $event->getParam('streamName');
 
             try {
@@ -128,13 +127,13 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
             }
         });
 
-        $actionEventEmitter->attachListener(self::EVENT_HAS_STREAM, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_HAS_STREAM, function (ActionEvent $event) {
             $streamName = $event->getParam('streamName');
 
             $event->setParam('result', $this->eventStore->hasStream($streamName));
         });
 
-        $actionEventEmitter->attachListener(self::EVENT_FETCH_STREAM_METADATA, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_FETCH_STREAM_METADATA, function (ActionEvent $event) {
             $streamName = $event->getParam('streamName');
 
             try {
@@ -145,7 +144,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
             }
         });
 
-        $actionEventEmitter->attachListener(self::EVENT_UPDATE_STREAM_METADATA, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_UPDATE_STREAM_METADATA, function (ActionEvent $event) {
             $streamName = $event->getParam('streamName');
             $metadata = $event->getParam('metadata');
 
@@ -156,7 +155,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
             }
         });
 
-        $actionEventEmitter->attachListener(self::EVENT_FETCH_STREAM_NAMES, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_FETCH_STREAM_NAMES, function (ActionEvent $event) {
             $filter = $event->getParam('filter');
             $metadataMatcher = $event->getParam('metadataMatcher');
             $limit = $event->getParam('limit');
@@ -167,7 +166,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
             $event->setParam('streamNames', $streamNames);
         });
 
-        $actionEventEmitter->attachListener(self::EVENT_FETCH_STREAM_NAMES_REGEX, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_FETCH_STREAM_NAMES_REGEX, function (ActionEvent $event) {
             $filter = $event->getParam('filter');
             $metadataMatcher = $event->getParam('metadataMatcher');
             $limit = $event->getParam('limit');
@@ -178,7 +177,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
             $event->setParam('streamNames', $streamNames);
         });
 
-        $actionEventEmitter->attachListener(self::EVENT_FETCH_CATEGORY_NAMES, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_FETCH_CATEGORY_NAMES, function (ActionEvent $event) {
             $filter = $event->getParam('filter');
             $limit = $event->getParam('limit');
             $offset = $event->getParam('offset');
@@ -188,7 +187,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
             $event->setParam('categoryNames', $streamNames);
         });
 
-        $actionEventEmitter->attachListener(self::EVENT_FETCH_CATEGORY_NAMES_REGEX, function (ActionEvent $event): void {
+        $actionEventEmitter->attachListener(self::EVENT_FETCH_CATEGORY_NAMES_REGEX, function (ActionEvent $event) {
             $filter = $event->getParam('filter');
             $limit = $event->getParam('limit');
             $offset = $event->getParam('offset');
@@ -199,7 +198,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
         });
     }
 
-    public function create(Stream $stream): void
+    public function create(Stream $stream)
     {
         $argv = ['stream' => $stream];
 
@@ -212,7 +211,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
         }
     }
 
-    public function appendTo(StreamName $streamName, Iterator $streamEvents): void
+    public function appendTo(StreamName $streamName, Iterator $streamEvents)
     {
         $argv = ['streamName' => $streamName, 'streamEvents' => $streamEvents];
 
@@ -231,10 +230,10 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
 
     public function load(
         StreamName $streamName,
-        int $fromNumber = 1,
-        int $count = null,
+        $fromNumber = 1,
+        $count = null,
         MetadataMatcher $metadataMatcher = null
-    ): Iterator {
+    ) {
         Assertion::greaterOrEqualThan($fromNumber, 1);
         Assertion::nullOrGreaterOrEqualThan($count, 1);
 
@@ -264,10 +263,10 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
 
     public function loadReverse(
         StreamName $streamName,
-        int $fromNumber = null,
-        int $count = null,
+        $fromNumber = null,
+        $count = null,
         MetadataMatcher $metadataMatcher = null
-    ): Iterator {
+    ) {
         Assertion::nullOrGreaterOrEqualThan($fromNumber, 1);
         Assertion::nullOrGreaterOrEqualThan($count, 1);
 
@@ -295,7 +294,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
         return $stream;
     }
 
-    public function delete(StreamName $streamName): void
+    public function delete(StreamName $streamName)
     {
         $event = $this->actionEventEmitter->getNewActionEvent(self::EVENT_DELETE, $this, ['streamName' => $streamName]);
 
@@ -306,7 +305,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
         }
     }
 
-    public function hasStream(StreamName $streamName): bool
+    public function hasStream(StreamName $streamName)
     {
         $event = $this->actionEventEmitter->getNewActionEvent(
             self::EVENT_HAS_STREAM,
@@ -319,7 +318,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
         return $event->getParam('result', false);
     }
 
-    public function fetchStreamMetadata(StreamName $streamName): array
+    public function fetchStreamMetadata(StreamName $streamName)
     {
         $event = $this->actionEventEmitter->getNewActionEvent(
             self::EVENT_FETCH_STREAM_METADATA,
@@ -342,7 +341,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
         return $metadata;
     }
 
-    public function updateStreamMetadata(StreamName $streamName, array $newMetadata): void
+    public function updateStreamMetadata(StreamName $streamName, array $newMetadata)
     {
         $event = $this->actionEventEmitter->getNewActionEvent(
             self::EVENT_UPDATE_STREAM_METADATA,
@@ -361,11 +360,11 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
     }
 
     public function fetchStreamNames(
-        ?string $filter,
-        ?MetadataMatcher $metadataMatcher,
-        int $limit = 20,
-        int $offset = 0
-    ): array {
+        $filter,
+        MetadataMatcher $metadataMatcher = null,
+        $limit = 20,
+        $offset = 0
+    ) {
         $event = $this->actionEventEmitter->getNewActionEvent(
             self::EVENT_FETCH_STREAM_NAMES,
             $this,
@@ -383,11 +382,11 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
     }
 
     public function fetchStreamNamesRegex(
-        string $filter,
-        ?MetadataMatcher $metadataMatcher,
-        int $limit = 20,
-        int $offset = 0
-    ): array {
+        $filter,
+        MetadataMatcher $metadataMatcher = null,
+        $limit = 20,
+        $offset = 0
+    ) {
         $event = $this->actionEventEmitter->getNewActionEvent(
             self::EVENT_FETCH_STREAM_NAMES_REGEX,
             $this,
@@ -404,7 +403,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
         return $event->getParam('streamNames', []);
     }
 
-    public function fetchCategoryNames(?string $filter, int $limit = 20, int $offset = 0): array
+    public function fetchCategoryNames($filter, $limit = 20, $offset = 0)
     {
         $event = $this->actionEventEmitter->getNewActionEvent(
             self::EVENT_FETCH_CATEGORY_NAMES,
@@ -421,7 +420,7 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
         return $event->getParam('categoryNames', []);
     }
 
-    public function fetchCategoryNamesRegex(string $filter, int $limit = 20, int $offset = 0): array
+    public function fetchCategoryNamesRegex($filter, $limit = 20, $offset = 0)
     {
         $event = $this->actionEventEmitter->getNewActionEvent(
             self::EVENT_FETCH_CATEGORY_NAMES_REGEX,
@@ -438,17 +437,17 @@ class ActionEventEmitterEventStore implements EventStoreDecorator
         return $event->getParam('categoryNames', []);
     }
 
-    public function attach(string $eventName, callable $listener, int $priority = 0): ListenerHandler
+    public function attach($eventName, callable $listener, $priority = 0)
     {
         return $this->actionEventEmitter->attachListener($eventName, $listener, $priority);
     }
 
-    public function detach(ListenerHandler $handler): void
+    public function detach(ListenerHandler $handler)
     {
         $this->actionEventEmitter->detachListener($handler);
     }
 
-    public function getInnerEventStore(): EventStore
+    public function getInnerEventStore()
     {
         return $this->eventStore;
     }

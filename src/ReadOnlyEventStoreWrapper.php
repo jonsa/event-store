@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore;
 
@@ -27,58 +26,58 @@ final class ReadOnlyEventStoreWrapper implements ReadOnlyEventStore
         $this->eventStore = $eventStore;
     }
 
-    public function fetchStreamMetadata(StreamName $streamName): array
+    public function fetchStreamMetadata(StreamName $streamName)
     {
         return $this->eventStore->fetchStreamMetadata($streamName);
     }
 
-    public function hasStream(StreamName $streamName): bool
+    public function hasStream(StreamName $streamName)
     {
         return $this->eventStore->hasStream($streamName);
     }
 
     public function load(
         StreamName $streamName,
-        int $fromNumber = 1,
-        int $count = null,
+        $fromNumber = 1,
+        $count = null,
         MetadataMatcher $metadataMatcher = null
-    ): Iterator {
+    ) {
         return $this->eventStore->load($streamName, $fromNumber, $count, $metadataMatcher);
     }
 
     public function loadReverse(
         StreamName $streamName,
-        int $fromNumber = null,
-        int $count = null,
+        $fromNumber = null,
+        $count = null,
         MetadataMatcher $metadataMatcher = null
-    ): Iterator {
+    ) {
         return $this->eventStore->loadReverse($streamName, $fromNumber, $count, $metadataMatcher);
     }
 
     public function fetchStreamNames(
-        ?string $filter,
-        ?MetadataMatcher $metadataMatcher,
-        int $limit = 20,
-        int $offset = 0
-    ): array {
+        $filter,
+        MetadataMatcher $metadataMatcher = null,
+        $limit = 20,
+        $offset = 0
+    ) {
         return $this->eventStore->fetchStreamNames($filter, $metadataMatcher, $limit, $offset);
     }
 
     public function fetchStreamNamesRegex(
-        string $filter,
-        ?MetadataMatcher $metadataMatcher,
-        int $limit = 20,
-        int $offset = 0
-    ): array {
+        $filter,
+        MetadataMatcher $metadataMatcher = null,
+        $limit = 20,
+        $offset = 0
+    ) {
         return $this->eventStore->fetchStreamNamesRegex($filter, $metadataMatcher, $limit, $offset);
     }
 
-    public function fetchCategoryNames(?string $filter, int $limit = 20, int $offset = 0): array
+    public function fetchCategoryNames($filter, $limit = 20, $offset = 0)
     {
         return $this->eventStore->fetchCategoryNames($filter, $limit, $offset);
     }
 
-    public function fetchCategoryNamesRegex(string $filter, int $limit = 20, int $offset = 0): array
+    public function fetchCategoryNamesRegex($filter, $limit = 20, $offset = 0)
     {
         return $this->eventStore->fetchCategoryNamesRegex($filter, $limit, $offset);
     }

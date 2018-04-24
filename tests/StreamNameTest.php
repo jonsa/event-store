@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore;
 
@@ -20,7 +19,7 @@ class StreamNameTest extends TestCase
     /**
      * @test
      */
-    public function it_delegates_to_string(): void
+    public function it_delegates_to_string()
     {
         $streamName = new StreamName('foo');
         $this->assertEquals('foo', (string) $streamName);

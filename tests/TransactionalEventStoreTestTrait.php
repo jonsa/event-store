@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore;
 
@@ -35,7 +34,7 @@ trait TransactionalEventStoreTestTrait
     /**
      * @test
      */
-    public function it_works_transactional(): void
+    public function it_works_transactional()
     {
         $streamName = $this->prophesize(StreamName::class);
         $streamName->toString()->willReturn('Prooph\Model\User')->shouldBeCalled();
@@ -58,7 +57,7 @@ trait TransactionalEventStoreTestTrait
     /**
      * @test
      */
-    public function it_wraps_up_code_in_transaction_properly(): void
+    public function it_wraps_up_code_in_transaction_properly()
     {
         $transactionResult = $this->eventStore->transactional(function (EventStore $eventStore) {
             $this->eventStore->create($this->getTestStream());
@@ -91,7 +90,7 @@ trait TransactionalEventStoreTestTrait
     /**
      * @test
      */
-    public function it_rolls_back_transaction(): void
+    public function it_rolls_back_transaction()
     {
         $streamName = $this->prophesize(StreamName::class);
         $streamName->toString()->willReturn('test')->shouldBeCalled();
@@ -116,7 +115,7 @@ trait TransactionalEventStoreTestTrait
     /**
      * @test
      */
-    public function it_should_rollback_and_throw_exception_in_case_of_transaction_fail(): void
+    public function it_should_rollback_and_throw_exception_in_case_of_transaction_fail()
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Transaction failed');
@@ -132,7 +131,7 @@ trait TransactionalEventStoreTestTrait
     /**
      * @test
      */
-    public function it_should_return_true_by_default_if_transaction_is_used(): void
+    public function it_should_return_true_by_default_if_transaction_is_used()
     {
         $transactionResult = $this->eventStore->transactional(function (EventStore $eventStore) {
             $this->eventStore->create($this->getTestStream());
@@ -144,7 +143,7 @@ trait TransactionalEventStoreTestTrait
     /**
      * @test
      */
-    public function it_throws_exception_when_transaction_already_started(): void
+    public function it_throws_exception_when_transaction_already_started()
     {
         $this->expectException(TransactionAlreadyStarted::class);
 
@@ -155,7 +154,7 @@ trait TransactionalEventStoreTestTrait
     /**
      * @test
      */
-    public function it_can_commit_empty_transaction(): void
+    public function it_can_commit_empty_transaction()
     {
         $this->eventStore->beginTransaction();
         $this->eventStore->commit();
@@ -166,7 +165,7 @@ trait TransactionalEventStoreTestTrait
     /**
      * @test
      */
-    public function it_cannot_commit_twice(): void
+    public function it_cannot_commit_twice()
     {
         $this->expectException(TransactionNotStarted::class);
 
@@ -178,7 +177,7 @@ trait TransactionalEventStoreTestTrait
     /**
      * @test
      */
-    public function it_can_rollback_empty_transaction(): void
+    public function it_can_rollback_empty_transaction()
     {
         $this->assertFalse($this->eventStore->inTransaction());
         $this->eventStore->beginTransaction();
@@ -190,7 +189,7 @@ trait TransactionalEventStoreTestTrait
     /**
      * @test
      */
-    public function it_cannot_rollback_twice(): void
+    public function it_cannot_rollback_twice()
     {
         $this->expectException(TransactionNotStarted::class);
 
@@ -202,7 +201,7 @@ trait TransactionalEventStoreTestTrait
     /**
      * @test
      */
-    public function it_throws_exception_when_no_transaction_started_on_commit(): void
+    public function it_throws_exception_when_no_transaction_started_on_commit()
     {
         $this->expectException(TransactionNotStarted::class);
 
@@ -212,7 +211,7 @@ trait TransactionalEventStoreTestTrait
     /**
      * @test
      */
-    public function it_throws_exception_when_no_transaction_started_on_rollback(): void
+    public function it_throws_exception_when_no_transaction_started_on_rollback()
     {
         $this->expectException(TransactionNotStarted::class);
 
@@ -222,7 +221,7 @@ trait TransactionalEventStoreTestTrait
     /**
      * @test
      */
-    public function it_loads_and_saves_within_one_transaction(): void
+    public function it_loads_and_saves_within_one_transaction()
     {
         $testStream = $this->getTestStream();
 

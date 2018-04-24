@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Metadata;
 
@@ -30,14 +29,9 @@ class MetadataEnricherPluginTest extends TestCase
     /**
      * @test
      */
-    public function it_enrich_metadata_on_stream_create(): void
+    public function it_enrich_metadata_on_stream_create()
     {
-        $metadataEnricher = new class() implements MetadataEnricher {
-            public function enrich(Message $message): Message
-            {
-                return $message->withAddedMetadata('foo', 'bar');
-            }
-        };
+        $metadataEnricher = new MetadataEnricherPluginTest_MetadataEnricher;
 
         $eventStore = new ActionEventEmitterEventStore(new InMemoryEventStore(), new ProophActionEventEmitter());
 
@@ -57,7 +51,7 @@ class MetadataEnricherPluginTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_enrich_metadata_on_create_if_stream_is_not_set(): void
+    public function it_does_not_enrich_metadata_on_create_if_stream_is_not_set()
     {
         $metadataEnricher = $this->prophesize(MetadataEnricher::class);
         $metadataEnricher->enrich(Argument::any())->shouldNotBeCalled();
@@ -71,14 +65,9 @@ class MetadataEnricherPluginTest extends TestCase
     /**
      * @test
      */
-    public function it_enrich_metadata_on_stream_appendTo(): void
+    public function it_enrich_metadata_on_stream_appendTo()
     {
-        $metadataEnricher = new class() implements MetadataEnricher {
-            public function enrich(Message $message): Message
-            {
-                return $message->withAddedMetadata('foo', 'bar');
-            }
-        };
+        $metadataEnricher = new MetadataEnricherPluginTest_MetadataEnricher;
 
         $eventStore = new ActionEventEmitterEventStore(new InMemoryEventStore(), new ProophActionEventEmitter());
 
@@ -100,7 +89,7 @@ class MetadataEnricherPluginTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_enrich_metadata_on_appendTo_if_stream_is_not_set(): void
+    public function it_does_not_enrich_metadata_on_appendTo_if_stream_is_not_set()
     {
         $metadataEnricher = $this->prophesize(MetadataEnricher::class);
         $metadataEnricher->enrich(Argument::any())->shouldNotBeCalled();
@@ -114,7 +103,7 @@ class MetadataEnricherPluginTest extends TestCase
     /**
      * @test
      */
-    public function it_detaches_from_event_store(): void
+    public function it_detaches_from_event_store()
     {
         $metadataEnricher = $this->prophesize(MetadataEnricher::class);
         $metadataEnricher->enrich(Argument::any())->shouldNotBeCalled();
@@ -130,5 +119,13 @@ class MetadataEnricherPluginTest extends TestCase
         $stream = $eventStore->load(new StreamName('foo'));
 
         $this->assertEmpty($stream->current()->metadata());
+    }
+}
+
+class MetadataEnricherPluginTest_MetadataEnricher implements MetadataEnricher
+{
+    public function enrich(Message $message)
+    {
+        return $message->withAddedMetadata('foo', 'bar');
     }
 }

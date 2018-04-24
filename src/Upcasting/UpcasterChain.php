@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Upcasting;
 
@@ -26,7 +25,7 @@ final class UpcasterChain implements Upcaster
         $this->upcasters = $upcasters;
     }
 
-    public function upcast(Message $message): array
+    public function upcast(Message $message)
     {
         $result = [];
         $messages = [$message];

@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore;
 
@@ -19,19 +18,19 @@ class StreamName
      */
     protected $name;
 
-    public function __construct(string $name)
+    public function __construct($name)
     {
         Util\Assertion::notEmpty($name, 'StreamName must not be empty');
 
         $this->name = $name;
     }
 
-    public function toString(): string
+    public function toString()
     {
         return $this->name;
     }
 
-    public function __toString(): string
+    public function __toString()
     {
         return $this->toString();
     }

@@ -8,13 +8,12 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Exception;
 
 class ProjectionNotFound extends RuntimeException
 {
-    public static function withName(string $name): ProjectionNotFound
+    public static function withName($name)
     {
         return new self('A projection with name "' . $name . '" could not be found.');
     }

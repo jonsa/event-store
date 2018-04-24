@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Container;
 
@@ -66,7 +65,7 @@ final class InMemoryEventStoreFactory implements
      *
      * @throws InvalidArgumentException
      */
-    public static function __callStatic(string $name, array $arguments): ReadOnlyEventStore
+    public static function __callStatic($name, array $arguments)
     {
         if (! isset($arguments[0]) || ! $arguments[0] instanceof ContainerInterface) {
             throw new InvalidArgumentException(
@@ -77,7 +76,7 @@ final class InMemoryEventStoreFactory implements
         return (new static($name))->__invoke($arguments[0]);
     }
 
-    public function __construct(string $configId = 'default')
+    public function __construct($configId = 'default')
     {
         $this->configId = $configId;
     }
@@ -85,7 +84,7 @@ final class InMemoryEventStoreFactory implements
     /**
      * @throws ConfigurationException
      */
-    public function __invoke(ContainerInterface $container): ReadOnlyEventStore
+    public function __invoke(ContainerInterface $container)
     {
         $config = $container->get('config');
         $config = $this->options($config, $this->configId);
@@ -156,7 +155,7 @@ final class InMemoryEventStoreFactory implements
     /**
      * {@inheritdoc}
      */
-    public function dimensions(): iterable
+    public function dimensions()
     {
         return ['prooph', 'event_store'];
     }
@@ -164,7 +163,7 @@ final class InMemoryEventStoreFactory implements
     /**
      * {@inheritdoc}
      */
-    public function defaultOptions(): iterable
+    public function defaultOptions()
     {
         return [
             'metadata_enrichers' => [],
@@ -175,7 +174,7 @@ final class InMemoryEventStoreFactory implements
         ];
     }
 
-    private function determineEventsForDefaultEmitter(): array
+    private function determineEventsForDefaultEmitter()
     {
         if ($this->isTransactional) {
             return TransactionalActionEventEmitterEventStore::ALL_EVENTS;
@@ -184,7 +183,7 @@ final class InMemoryEventStoreFactory implements
         return ActionEventEmitterEventStore::ALL_EVENTS;
     }
 
-    private function createEventStore(): EventStore
+    private function createEventStore()
     {
         if ($this->isTransactional) {
             return new InMemoryEventStore();
@@ -196,7 +195,7 @@ final class InMemoryEventStoreFactory implements
     private function createActionEventEmitterDecorator(
         EventStore $eventStore,
         ActionEventEmitter $actionEventEmitter
-    ): ActionEventEmitterEventStore {
+    ) {
         if ($this->isTransactional) {
             /** @var TransactionalEventStore $eventStore */
             return new TransactionalActionEventEmitterEventStore($eventStore, $actionEventEmitter);
@@ -205,7 +204,7 @@ final class InMemoryEventStoreFactory implements
         return new ActionEventEmitterEventStore($eventStore, $actionEventEmitter);
     }
 
-    private function isTransactional(array $config): bool
+    private function isTransactional(array $config)
     {
         return isset($config['transactional']) && $config['transactional'] === true;
     }

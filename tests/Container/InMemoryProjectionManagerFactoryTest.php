@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Container;
 
@@ -24,7 +23,7 @@ class InMemoryProjectionManagerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_projection_manager(): void
+    public function it_creates_projection_manager()
     {
         $config['prooph']['projection_manager']['default'] = [
             'event_store' => 'my_event_store',
@@ -45,7 +44,7 @@ class InMemoryProjectionManagerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_projection_manager_via_callstatic(): void
+    public function it_creates_projection_manager_via_callstatic()
     {
         $config['prooph']['projection_manager']['default'] = [
             'event_store' => 'my_event_store',
@@ -66,7 +65,7 @@ class InMemoryProjectionManagerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_invalid_container_given_to_callstatic(): void
+    public function it_throws_exception_when_invalid_container_given_to_callstatic()
     {
         $this->expectException(InvalidArgumentException::class);
 

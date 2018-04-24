@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore;
 
@@ -24,7 +23,7 @@ abstract class ActionEventEmitterEventStoreTestCase extends TestCase
      */
     protected $eventStore;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         $eventEmitter = new ProophActionEventEmitter(ActionEventEmitterEventStore::ALL_EVENTS);
 

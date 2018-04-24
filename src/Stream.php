@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore;
 
@@ -38,17 +37,17 @@ class Stream
         $this->metadata = $metadata;
     }
 
-    public function streamName(): StreamName
+    public function streamName()
     {
         return $this->streamName;
     }
 
-    public function streamEvents(): Iterator
+    public function streamEvents()
     {
         return $this->streamEvents;
     }
 
-    public function metadata(): array
+    public function metadata()
     {
         return $this->metadata;
     }

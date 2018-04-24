@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Container;
 
@@ -48,7 +47,7 @@ final class InMemoryProjectionManagerFactory implements
      *
      * @throws InvalidArgumentException
      */
-    public static function __callStatic(string $name, array $arguments): InMemoryProjectionManager
+    public static function __callStatic($name, array $arguments)
     {
         if (! isset($arguments[0]) || ! $arguments[0] instanceof ContainerInterface) {
             throw new InvalidArgumentException(
@@ -59,7 +58,7 @@ final class InMemoryProjectionManagerFactory implements
         return (new static($name))->__invoke($arguments[0]);
     }
 
-    public function __construct(string $configId = 'default')
+    public function __construct($configId = 'default')
     {
         $this->configId = $configId;
     }
@@ -67,7 +66,7 @@ final class InMemoryProjectionManagerFactory implements
     /**
      * @throws ConfigurationException
      */
-    public function __invoke(ContainerInterface $container): InMemoryProjectionManager
+    public function __invoke(ContainerInterface $container)
     {
         $config = $container->get('config');
         $config = $this->options($config, $this->configId);
@@ -80,12 +79,12 @@ final class InMemoryProjectionManagerFactory implements
     /**
      * {@inheritdoc}
      */
-    public function dimensions(): iterable
+    public function dimensions()
     {
         return ['prooph', 'projection_manager'];
     }
 
-    public function mandatoryOptions(): iterable
+    public function mandatoryOptions()
     {
         return [
             'event_store',

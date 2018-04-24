@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Projection;
 
@@ -42,19 +41,19 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_query_from_stream_and_reset(): void
+    public function it_can_query_from_stream_and_reset()
     {
         $this->prepareEventStream('user-123');
 
         $query = $this->projectionManager->createQuery();
 
         $query
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStream('user-123')
             ->when([
-                UsernameChanged::class => function (array $state, UsernameChanged $event): array {
+                UsernameChanged::class => function (array $state, UsernameChanged $event) {
                     $state['count']++;
 
                     return $state;
@@ -74,18 +73,18 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_stopped_while_processing(): void
+    public function it_can_be_stopped_while_processing()
     {
         $this->prepareEventStream('user-123');
 
         $query = $this->projectionManager->createQuery();
 
         $query
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStream('user-123')
-            ->whenAny(function (array $state, Message $event): array {
+            ->whenAny(function (array $state, Message $event) {
                 $state['count']++;
 
                 if ($state['count'] === 10) {
@@ -102,7 +101,7 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_query_from_streams(): void
+    public function it_can_query_from_streams()
     {
         $this->prepareEventStream('user-123');
         $this->prepareEventStream('user-234');
@@ -110,12 +109,12 @@ abstract class AbstractEventStoreQueryTest extends TestCase
         $query = $this->projectionManager->createQuery();
 
         $query
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStreams('user-123', 'user-234')
             ->whenAny(
-                function (array $state, Message $event): array {
+                function (array $state, Message $event) {
                     $state['count']++;
 
                     return $state;
@@ -129,7 +128,7 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_query_from_all_ignoring_internal_streams(): void
+    public function it_can_query_from_all_ignoring_internal_streams()
     {
         $this->prepareEventStream('user-123');
         $this->prepareEventStream('user-234');
@@ -140,12 +139,12 @@ abstract class AbstractEventStoreQueryTest extends TestCase
         $query = $this->projectionManager->createQuery();
 
         $query
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromAll()
             ->whenAny(
-                function (array $state, Message $event) use ($testCase): array {
+                function (array $state, Message $event) use ($testCase) {
                     $state['count']++;
                     if ($state['count'] < 51) {
                         $testCase->assertEquals('user-123', $this->streamName());
@@ -164,7 +163,7 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_query_from_category_with_when_any(): void
+    public function it_can_query_from_category_with_when_any()
     {
         $this->prepareEventStream('user-123');
         $this->prepareEventStream('user-234');
@@ -172,12 +171,12 @@ abstract class AbstractEventStoreQueryTest extends TestCase
         $query = $this->projectionManager->createQuery();
 
         $query
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromCategory('user')
             ->whenAny(
-                function (array $state, Message $event): array {
+                function (array $state, Message $event) {
                     $state['count']++;
 
                     return $state;
@@ -191,7 +190,7 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_query_from_categories_with_when(): void
+    public function it_can_query_from_categories_with_when()
     {
         $this->prepareEventStream('user-123');
         $this->prepareEventStream('user-234');
@@ -201,12 +200,12 @@ abstract class AbstractEventStoreQueryTest extends TestCase
         $query = $this->projectionManager->createQuery();
 
         $query
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromCategories('user', 'guest')
             ->when([
-                UserCreated::class => function (array $state, Message $event): array {
+                UserCreated::class => function (array $state, Message $event) {
                     $state['count']++;
 
                     return $state;
@@ -220,19 +219,19 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_resumes_query_from_position(): void
+    public function it_resumes_query_from_position()
     {
         $this->prepareEventStream('user-123');
 
         $query = $this->projectionManager->createQuery();
 
         $query
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStreams('user-123', 'user-234')
             ->when([
-                UsernameChanged::class => function (array $state, Message $event): array {
+                UsernameChanged::class => function (array $state, Message $event) {
                     $state['count']++;
 
                     return $state;
@@ -261,7 +260,7 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_resets_to_empty_array(): void
+    public function it_resets_to_empty_array()
     {
         $query = $this->projectionManager->createQuery();
 
@@ -279,16 +278,16 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_init_callback_provided_twice(): void
+    public function it_throws_exception_when_init_callback_provided_twice()
     {
         $this->expectException(RuntimeException::class);
 
         $query = $this->projectionManager->createQuery();
 
-        $query->init(function (): array {
+        $query->init(function () {
             return [];
         });
-        $query->init(function (): array {
+        $query->init(function () {
             return [];
         });
     }
@@ -296,7 +295,7 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_from_called_twice(): void
+    public function it_throws_exception_when_from_called_twice()
     {
         $this->expectException(RuntimeException::class);
 
@@ -309,7 +308,7 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_from_called_twice_2(): void
+    public function it_throws_exception_when_from_called_twice_2()
     {
         $this->expectException(RuntimeException::class);
 
@@ -322,7 +321,7 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_from_called_twice_3(): void
+    public function it_throws_exception_when_from_called_twice_3()
     {
         $this->expectException(RuntimeException::class);
 
@@ -335,7 +334,7 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_from_called_twice_4(): void
+    public function it_throws_exception_when_from_called_twice_4()
     {
         $this->expectException(RuntimeException::class);
 
@@ -348,7 +347,7 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_from_called_twice_5(): void
+    public function it_throws_exception_when_from_called_twice_5()
     {
         $this->expectException(RuntimeException::class);
 
@@ -361,35 +360,35 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_when_called_twice(): void
+    public function it_throws_exception_when_when_called_twice()
     {
         $this->expectException(RuntimeException::class);
 
         $query = $this->projectionManager->createQuery();
 
-        $query->when(['foo' => function (): void {
+        $query->when(['foo' => function () {
         }]);
-        $query->when(['foo' => function (): void {
+        $query->when(['foo' => function () {
         }]);
     }
 
     /**
      * @test
      */
-    public function it_throws_exception_when_invalid_handlers_configured(): void
+    public function it_throws_exception_when_invalid_handlers_configured()
     {
         $this->expectException(InvalidArgumentException::class);
 
         $query = $this->projectionManager->createQuery();
 
-        $query->when(['1' => function (): void {
+        $query->when(['1' => function () {
         }]);
     }
 
     /**
      * @test
      */
-    public function it_throws_exception_when_invalid_handlers_configured_2(): void
+    public function it_throws_exception_when_invalid_handlers_configured_2()
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -401,22 +400,22 @@ abstract class AbstractEventStoreQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_whenAny_called_twice(): void
+    public function it_throws_exception_when_whenAny_called_twice()
     {
         $this->expectException(RuntimeException::class);
 
         $query = $this->projectionManager->createQuery();
 
-        $query->whenAny(function (): void {
+        $query->whenAny(function () {
         });
-        $query->whenAny(function (): void {
+        $query->whenAny(function () {
         });
     }
 
     /**
      * @test
      */
-    public function it_throws_exception_on_run_when_nothing_configured(): void
+    public function it_throws_exception_on_run_when_nothing_configured()
     {
         $this->expectException(RuntimeException::class);
 
@@ -424,7 +423,7 @@ abstract class AbstractEventStoreQueryTest extends TestCase
         $query->run();
     }
 
-    protected function prepareEventStream(string $name): void
+    protected function prepareEventStream($name)
     {
         $events = [];
         $events[] = UserCreated::with([

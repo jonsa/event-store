@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore;
 
@@ -17,13 +16,13 @@ namespace Prooph\EventStore;
  */
 interface TransactionalEventStore extends EventStore
 {
-    public function beginTransaction(): void;
+    public function beginTransaction();
 
-    public function commit(): void;
+    public function commit();
 
-    public function rollback(): void;
+    public function rollback();
 
-    public function inTransaction(): bool;
+    public function inTransaction();
 
     /**
      * @throws \Exception

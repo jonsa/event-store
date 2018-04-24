@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore;
 
@@ -17,51 +16,51 @@ use Prooph\EventStore\Metadata\MetadataMatcher;
 
 interface ReadOnlyEventStore
 {
-    public function fetchStreamMetadata(StreamName $streamName): array;
+    public function fetchStreamMetadata(StreamName $streamName);
 
-    public function hasStream(StreamName $streamName): bool;
+    public function hasStream(StreamName $streamName);
 
     public function load(
         StreamName $streamName,
-        int $fromNumber = 1,
-        int $count = null,
+        $fromNumber = 1,
+        $count = null,
         MetadataMatcher $metadataMatcher = null
-    ): Iterator;
+    );
 
     public function loadReverse(
         StreamName $streamName,
-        int $fromNumber = null,
-        int $count = null,
+        $fromNumber = null,
+        $count = null,
         MetadataMatcher $metadataMatcher = null
-    ): Iterator;
+    );
 
     /**
      * @return StreamName[]
      */
     public function fetchStreamNames(
-        ?string $filter,
-        ?MetadataMatcher $metadataMatcher,
-        int $limit = 20,
-        int $offset = 0
-    ): array;
+        $filter,
+        MetadataMatcher $metadataMatcher = null,
+        $limit = 20,
+        $offset = 0
+    );
 
     /**
      * @return StreamName[]
      */
     public function fetchStreamNamesRegex(
-        string $filter,
-        ?MetadataMatcher $metadataMatcher,
-        int $limit = 20,
-        int $offset = 0
-    ): array;
+        $filter,
+        MetadataMatcher $metadataMatcher = null,
+        $limit = 20,
+        $offset = 0
+    );
 
     /**
      * @return string[]
      */
-    public function fetchCategoryNames(?string $filter, int $limit = 20, int $offset = 0): array;
+    public function fetchCategoryNames($filter, $limit = 20, $offset = 0);
 
     /**
      * @return string[]
      */
-    public function fetchCategoryNamesRegex(string $filter, int $limit = 20, int $offset = 0): array;
+    public function fetchCategoryNamesRegex($filter, $limit = 20, $offset = 0);
 }

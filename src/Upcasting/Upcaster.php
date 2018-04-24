@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Upcasting;
 
@@ -20,5 +19,5 @@ interface Upcaster
      * @param Message $message
      * @return array of messages
      */
-    public function upcast(Message $message): array;
+    public function upcast(Message $message);
 }

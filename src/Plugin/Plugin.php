@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Plugin;
 
@@ -16,7 +15,7 @@ use Prooph\EventStore\ActionEventEmitterEventStore;
 
 interface Plugin
 {
-    public function attachToEventStore(ActionEventEmitterEventStore $eventStore): void;
+    public function attachToEventStore(ActionEventEmitterEventStore $eventStore);
 
-    public function detachFromEventStore(ActionEventEmitterEventStore $eventStore): void;
+    public function detachFromEventStore(ActionEventEmitterEventStore $eventStore);
 }

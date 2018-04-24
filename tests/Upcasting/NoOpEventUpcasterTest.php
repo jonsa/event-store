@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Upcasting;
 
@@ -21,7 +20,7 @@ class NoOpEventUpcasterTest extends TestCase
     /**
      * @test
      */
-    public function it_does_nothing_during_upcast(): void
+    public function it_does_nothing_during_upcast()
     {
         $message = $this->prophesize(Message::class);
         $message = $message->reveal();

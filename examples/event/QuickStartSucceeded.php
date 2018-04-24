@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\QuickStart\Event;
 
@@ -27,12 +26,12 @@ final class QuickStartSucceeded extends DomainEvent
      */
     private $text;
 
-    public static function withSuccessMessage(string $text): QuickStartSucceeded
+    public static function withSuccessMessage($text)
     {
         return new self($text);
     }
 
-    private function __construct(string $text)
+    private function __construct($text)
     {
         Assertion::minLength($text, 1, 'Success message must be at least 1 char long');
         $this->text = $text;
@@ -40,17 +39,17 @@ final class QuickStartSucceeded extends DomainEvent
         $this->init();
     }
 
-    public function getText(): string
+    public function getText()
     {
         return $this->text;
     }
 
-    public function payload(): array
+    public function payload()
     {
         return ['text' => $this->text];
     }
 
-    protected function setPayload(array $payload): void
+    protected function setPayload(array $payload)
     {
         $this->text = $payload['text'];
     }

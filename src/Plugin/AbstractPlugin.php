@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Plugin;
 
@@ -18,7 +17,7 @@ abstract class AbstractPlugin implements Plugin
 {
     protected $listenerHandlers = [];
 
-    public function detachFromEventStore(ActionEventEmitterEventStore $eventStore): void
+    public function detachFromEventStore(ActionEventEmitterEventStore $eventStore)
     {
         foreach ($this->listenerHandlers as $listenerHandler) {
             $eventStore->detach($listenerHandler);

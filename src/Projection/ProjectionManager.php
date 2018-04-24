@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Projection;
 
@@ -16,56 +15,56 @@ use Prooph\EventStore\Exception\ProjectionNotFound;
 
 interface ProjectionManager
 {
-    public function createQuery(): Query;
+    public function createQuery();
 
     public function createProjection(
-        string $name,
+        $name,
         array $options = []
-    ): Projector;
+    );
 
     public function createReadModelProjection(
-        string $name,
+        $name,
         ReadModel $readModel,
         array $options = []
-    ): ReadModelProjector;
+    );
 
     /**
      * @throws ProjectionNotFound
      */
-    public function deleteProjection(string $name, bool $deleteEmittedEvents): void;
+    public function deleteProjection($name, $deleteEmittedEvents);
 
     /**
      * @throws ProjectionNotFound
      */
-    public function resetProjection(string $name): void;
+    public function resetProjection($name);
 
     /**
      * @throws ProjectionNotFound
      */
-    public function stopProjection(string $name): void;
+    public function stopProjection($name);
 
     /**
      * @return string[]
      */
-    public function fetchProjectionNames(?string $filter, int $limit = 20, int $offset = 0): array;
+    public function fetchProjectionNames($filter, $limit = 20, $offset = 0);
 
     /**
      * @return string[]
      */
-    public function fetchProjectionNamesRegex(string $regex, int $limit = 20, int $offset = 0): array;
+    public function fetchProjectionNamesRegex($regex, $limit = 20, $offset = 0);
 
     /**
      * @throws ProjectionNotFound
      */
-    public function fetchProjectionStatus(string $name): ProjectionStatus;
+    public function fetchProjectionStatus($name);
 
     /**
      * @throws ProjectionNotFound
      */
-    public function fetchProjectionStreamPositions(string $name): array;
+    public function fetchProjectionStreamPositions($name);
 
     /**
      * @throws ProjectionNotFound
      */
-    public function fetchProjectionState(string $name): array;
+    public function fetchProjectionState($name);
 }

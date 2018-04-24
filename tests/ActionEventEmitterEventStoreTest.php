@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore;
 
@@ -32,7 +31,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_breaks_loading_a_stream_when_listener_stops_propagation_but_does_not_provide_a_stream(): void
+    public function it_breaks_loading_a_stream_when_listener_stops_propagation_but_does_not_provide_a_stream()
     {
         $this->expectException(StreamNotFound::class);
 
@@ -42,7 +41,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
 
         $this->eventStore->attach(
             'load',
-            function (ActionEvent $event): void {
+            function (ActionEvent $event) {
                 $event->stopPropagation(true);
             },
             1000
@@ -54,7 +53,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_cannot_create_a_stream_with_same_name_twice(): void
+    public function it_cannot_create_a_stream_with_same_name_twice()
     {
         $this->expectException(StreamExistsAlready::class);
 
@@ -67,7 +66,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_throws_exception_when_trying_to_append_to_non_existing_stream(): void
+    public function it_throws_exception_when_trying_to_append_to_non_existing_stream()
     {
         $this->expectException(StreamNotFound::class);
 
@@ -80,7 +79,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_throws_concurrency_exception_when_it_happens(): void
+    public function it_throws_concurrency_exception_when_it_happens()
     {
         $this->expectException(ConcurrencyException::class);
 
@@ -100,7 +99,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_throws_exception_when_trying_to_load_non_existing_stream(): void
+    public function it_throws_exception_when_trying_to_load_non_existing_stream()
     {
         $this->expectException(StreamNotFound::class);
 
@@ -113,7 +112,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_throws_exception_when_trying_to_load_reverse_non_existing_stream(): void
+    public function it_throws_exception_when_trying_to_load_reverse_non_existing_stream()
     {
         $this->expectException(StreamNotFound::class);
 
@@ -126,7 +125,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_loads_events_in_reverse_order(): void
+    public function it_loads_events_in_reverse_order()
     {
         $stream = $this->getTestStream();
 
@@ -173,7 +172,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_throws_exception_when_listener_stops_loading_events_and_does_not_provide_loaded_events(): void
+    public function it_throws_exception_when_listener_stops_loading_events_and_does_not_provide_loaded_events()
     {
         $this->expectException(StreamNotFound::class);
 
@@ -183,7 +182,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
 
         $this->eventStore->attach(
             'load',
-            function (ActionEvent $event): void {
+            function (ActionEvent $event) {
                 $event->stopPropagation(true);
             },
             1000
@@ -195,7 +194,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_throws_exception_when_listener_stops_loading_events_and_does_not_provide_loaded_events_reverse(): void
+    public function it_throws_exception_when_listener_stops_loading_events_and_does_not_provide_loaded_events_reverse()
     {
         $this->expectException(StreamNotFound::class);
 
@@ -205,7 +204,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
 
         $this->eventStore->attach(
             'loadReverse',
-            function (ActionEvent $event): void {
+            function (ActionEvent $event) {
                 $event->stopPropagation(true);
             },
             1000
@@ -217,7 +216,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_throws_exception_when_trying_to_delete_unknown_stream(): void
+    public function it_throws_exception_when_trying_to_delete_unknown_stream()
     {
         $this->expectException(StreamNotFound::class);
 
@@ -230,13 +229,13 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_does_not_append_events_when_listener_stops_propagation(): void
+    public function it_does_not_append_events_when_listener_stops_propagation()
     {
         $recordedEvents = [];
 
         $this->eventStore->attach(
             'create',
-            function (ActionEvent $event) use (&$recordedEvents): void {
+            function (ActionEvent $event) use (&$recordedEvents) {
                 foreach ($event->getParam('recordedEvents', new \ArrayIterator()) as $recordedEvent) {
                     $recordedEvents[] = $recordedEvent;
                 }
@@ -246,7 +245,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
 
         $this->eventStore->attach(
             'appendTo',
-            function (ActionEvent $event) use (&$recordedEvents): void {
+            function (ActionEvent $event) use (&$recordedEvents) {
                 foreach ($event->getParam('recordedEvents', new \ArrayIterator()) as $recordedEvent) {
                     $recordedEvents[] = $recordedEvent;
                 }
@@ -258,7 +257,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
 
         $this->eventStore->attach(
             'appendTo',
-            function (ActionEvent $event): void {
+            function (ActionEvent $event) {
                 $event->stopPropagation(true);
             },
             1000
@@ -277,7 +276,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_uses_stream_provided_by_listener_when_listener_stops_propagation(): void
+    public function it_uses_stream_provided_by_listener_when_listener_stops_propagation()
     {
         $stream = $this->getTestStream();
 
@@ -285,7 +284,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
 
         $this->eventStore->attach(
             'load',
-            function (ActionEvent $event): void {
+            function (ActionEvent $event) {
                 $event->setParam('streamEvents', new ArrayIterator());
                 $event->stopPropagation(true);
             },
@@ -300,7 +299,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_returns_listener_events_when_listener_stops_loading_events_and_provide_loaded_events(): void
+    public function it_returns_listener_events_when_listener_stops_loading_events_and_provide_loaded_events()
     {
         $stream = $this->getTestStream();
 
@@ -317,7 +316,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
 
         $this->eventStore->attach(
             'load',
-            function (ActionEvent $event): void {
+            function (ActionEvent $event) {
                 $streamEventWithMetadataButOtherUuid = UsernameChanged::with(
                     ['new_name' => 'John Doe'],
                     2
@@ -346,13 +345,13 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_appends_events_to_stream_and_records_them(): void
+    public function it_appends_events_to_stream_and_records_them()
     {
         $recordedEvents = [];
 
         $this->eventStore->attach(
             'create',
-            function (ActionEvent $event) use (&$recordedEvents): void {
+            function (ActionEvent $event) use (&$recordedEvents) {
                 $stream = $event->getParam('stream');
 
                 foreach ($stream->streamEvents() as $recordedEvent) {
@@ -364,7 +363,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
 
         $this->eventStore->attach(
             'appendTo',
-            function (ActionEvent $event) use (&$recordedEvents): void {
+            function (ActionEvent $event) use (&$recordedEvents) {
                 foreach ($event->getParam('streamEvents', new \ArrayIterator()) as $recordedEvent) {
                     $recordedEvents[] = $recordedEvent;
                 }
@@ -387,7 +386,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_creates_a_new_stream_and_records_the_stream_events_and_deletes(): void
+    public function it_creates_a_new_stream_and_records_the_stream_events_and_deletes()
     {
         $recordedEvents = [];
 
@@ -395,7 +394,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
 
         $this->eventStore->attach(
             'create',
-            function (ActionEvent $event) use (&$recordedEvents): void {
+            function (ActionEvent $event) use (&$recordedEvents) {
                 $stream = $event->getParam('stream');
 
                 foreach ($stream->streamEvents() as $recordedEvent) {
@@ -432,7 +431,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_throws_exception_when_asked_for_unknown_stream_metadata(): void
+    public function it_throws_exception_when_asked_for_unknown_stream_metadata()
     {
         $this->expectException(StreamNotFound::class);
 
@@ -445,7 +444,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_throws_exception_when_asked_for_stream_metadata_and_event_gets_stopped(): void
+    public function it_throws_exception_when_asked_for_stream_metadata_and_event_gets_stopped()
     {
         $this->expectException(StreamNotFound::class);
 
@@ -466,7 +465,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_updates_stream_metadata(): void
+    public function it_updates_stream_metadata()
     {
         $stream = $this->getTestStream();
 
@@ -485,7 +484,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_throws_stream_not_found_exception_when_trying_to_update_metadata_on_unknown_stream(): void
+    public function it_throws_stream_not_found_exception_when_trying_to_update_metadata_on_unknown_stream()
     {
         $this->expectException(StreamNotFound::class);
 
@@ -495,7 +494,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_fetches_stream_names(): void
+    public function it_fetches_stream_names()
     {
         $eventStore = $this->prophesize(EventStore::class);
         $eventStore->fetchStreamNames('foo', null, 10, 20)->shouldBeCalled();
@@ -508,7 +507,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_fetches_stream_names_regex(): void
+    public function it_fetches_stream_names_regex()
     {
         $eventStore = $this->prophesize(EventStore::class);
         $eventStore->fetchStreamNamesRegex('foo', null, 10, 20)->shouldBeCalled();
@@ -521,7 +520,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_fetches_category_names(): void
+    public function it_fetches_category_names()
     {
         $eventStore = $this->prophesize(EventStore::class);
         $eventStore->fetchCategoryNames('foo', 10, 20)->shouldBeCalled();
@@ -534,7 +533,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_fetches_category_names_regex(): void
+    public function it_fetches_category_names_regex()
     {
         $eventStore = $this->prophesize(EventStore::class);
         $eventStore->fetchCategoryNamesRegex('foo', 10, 20)->shouldBeCalled();
@@ -547,7 +546,7 @@ class ActionEventEmitterEventStoreTest extends ActionEventEmitterEventStoreTestC
     /**
      * @test
      */
-    public function it_returns_inner_event_store(): void
+    public function it_returns_inner_event_store()
     {
         $eventStore = $this->prophesize(EventStore::class);
         $eventStore = $eventStore->reveal();

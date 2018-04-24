@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Example;
 
@@ -19,7 +18,7 @@ class QuickStartTest extends TestCase
     /**
      * @test
      */
-    public function it_provides_the_correct_example_output(): void
+    public function it_provides_the_correct_example_output()
     {
         $pattern = sprintf(
             '~^Event with name Prooph\\\\EventStore\\\\QuickStart\\\\Event\\\\QuickStartSucceeded was recorded\. It occurred on %s ///\n\nIt works$~',
@@ -29,7 +28,7 @@ class QuickStartTest extends TestCase
         $this->assertRegExp($pattern, $this->getQuickstartOutput());
     }
 
-    private function getQuickstartOutput(): string
+    private function getQuickstartOutput()
     {
         ob_start();
         include __DIR__ . '/../../examples/quickstart.php';

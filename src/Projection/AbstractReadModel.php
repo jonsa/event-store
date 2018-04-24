@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Projection;
 
@@ -19,12 +18,12 @@ abstract class AbstractReadModel implements ReadModel
      */
     private $stack = [];
 
-    public function stack(string $operation, ...$args): void
+    public function stack($operation, ...$args)
     {
         $this->stack[] = [$operation, $args];
     }
 
-    public function persist(): void
+    public function persist()
     {
         foreach ($this->stack as list($operation, $args)) {
             $this->{$operation}(...$args);

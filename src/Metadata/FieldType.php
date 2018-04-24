@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Metadata;
 
@@ -20,6 +19,6 @@ use MabeEnum\Enum;
  */
 final class FieldType extends Enum
 {
-    public const METADATA = 0;
-    public const MESSAGE_PROPERTY = 1;
+    const METADATA = 0;
+    const MESSAGE_PROPERTY = 1;
 }

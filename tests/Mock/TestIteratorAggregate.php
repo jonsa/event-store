@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Mock;
 
@@ -17,7 +16,7 @@ use IteratorAggregate;
 
 final class TestIteratorAggregate implements IteratorAggregate
 {
-    public function getIterator(): ArrayIterator
+    public function getIterator()
     {
         return new ArrayIterator();
     }

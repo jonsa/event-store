@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Upcasting;
 
@@ -16,7 +15,7 @@ use Prooph\Common\Messaging\Message;
 
 abstract class SingleEventUpcaster implements Upcaster
 {
-    public function upcast(Message $message): array
+    public function upcast(Message $message)
     {
         if (! $this->canUpcast($message)) {
             return [$message];
@@ -25,7 +24,7 @@ abstract class SingleEventUpcaster implements Upcaster
         return $this->doUpcast($message);
     }
 
-    abstract protected function canUpcast(Message $message): bool;
+    abstract protected function canUpcast(Message $message);
 
-    abstract protected function doUpcast(Message $message): array;
+    abstract protected function doUpcast(Message $message);
 }

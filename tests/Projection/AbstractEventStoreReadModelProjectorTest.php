@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Projection;
 
@@ -45,7 +44,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_project_from_stream_and_reset(): void
+    public function it_can_project_from_stream_and_reset()
     {
         $this->prepareEventStream('user-123');
 
@@ -56,12 +55,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $this->assertEquals('test_projection', $projection->getName());
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStream('user-123')
             ->when([
-                UsernameChanged::class => function (array $state, UsernameChanged $event): array {
+                UsernameChanged::class => function (array $state, UsernameChanged $event) {
                     $state['count']++;
 
                     return $state;
@@ -83,7 +82,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_project_from_stream_and_delete(): void
+    public function it_can_project_from_stream_and_delete()
     {
         $this->prepareEventStream('user-123');
 
@@ -94,12 +93,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $this->assertEquals('test_projection', $projection->getName());
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStream('user-123')
             ->when([
-                UsernameChanged::class => function (array $state, UsernameChanged $event): array {
+                UsernameChanged::class => function (array $state, UsernameChanged $event) {
                     $state['count']++;
 
                     return $state;
@@ -117,7 +116,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_stopped_while_processing(): void
+    public function it_can_be_stopped_while_processing()
     {
         $this->prepareEventStream('user-123');
 
@@ -126,11 +125,11 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', $readModel);
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStream('user-123')
-            ->whenAny(function (array $state, Message $event): array {
+            ->whenAny(function (array $state, Message $event) {
                 $state['count']++;
 
                 if ($state['count'] === 10) {
@@ -147,7 +146,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_query_from_streams(): void
+    public function it_can_query_from_streams()
     {
         $this->prepareEventStream('user-123');
         $this->prepareEventStream('user-234');
@@ -157,12 +156,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', $readModel);
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStreams('user-123', 'user-234')
             ->whenAny(
-                function (array $state, Message $event): array {
+                function (array $state, Message $event) {
                     $state['count']++;
 
                     return $state;
@@ -176,7 +175,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_query_from_all_ignoring_internal_streams(): void
+    public function it_can_query_from_all_ignoring_internal_streams()
     {
         $this->prepareEventStream('user-123');
         $this->prepareEventStream('user-234');
@@ -189,12 +188,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', $readModel);
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromAll()
             ->whenAny(
-                function (array $state, Message $event) use ($testCase): array {
+                function (array $state, Message $event) use ($testCase) {
                     $state['count']++;
                     if ($state['count'] < 51) {
                         $testCase->assertEquals('user-123', $this->streamName());
@@ -213,7 +212,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_query_from_category_with_when_any(): void
+    public function it_can_query_from_category_with_when_any()
     {
         $this->prepareEventStream('user-123');
         $this->prepareEventStream('user-234');
@@ -223,12 +222,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', $readModel);
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromCategory('user')
             ->whenAny(
-                function (array $state, Message $event): array {
+                function (array $state, Message $event) {
                     $state['count']++;
 
                     return $state;
@@ -242,7 +241,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_query_from_categories_with_when(): void
+    public function it_can_query_from_categories_with_when()
     {
         $this->prepareEventStream('user-123');
         $this->prepareEventStream('user-234');
@@ -254,12 +253,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', $readModel);
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromCategories('user', 'guest')
             ->when([
-                UserCreated::class => function (array $state, Message $event): array {
+                UserCreated::class => function (array $state, Message $event) {
                     $state['count']++;
 
                     return $state;
@@ -273,7 +272,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_resumes_projection_from_position(): void
+    public function it_resumes_projection_from_position()
     {
         $this->prepareEventStream('user-123');
 
@@ -282,12 +281,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', $readModel);
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStreams('user-123', 'user-234')
             ->when([
-                UsernameChanged::class => function (array $state, Message $event): array {
+                UsernameChanged::class => function (array $state, Message $event) {
                     $state['count']++;
 
                     return $state;
@@ -316,7 +315,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_resets_to_empty_array(): void
+    public function it_resets_to_empty_array()
     {
         $readModel = new ReadModelMock();
 
@@ -336,7 +335,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_init_callback_provided_twice(): void
+    public function it_throws_exception_when_init_callback_provided_twice()
     {
         $this->expectException(RuntimeException::class);
 
@@ -344,10 +343,10 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
 
         $projection = $this->projectionManager->createReadModelProjection('test_projection', $readModel);
 
-        $projection->init(function (): array {
+        $projection->init(function () {
             return [];
         });
-        $projection->init(function (): array {
+        $projection->init(function () {
             return [];
         });
     }
@@ -355,7 +354,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_from_called_twice(): void
+    public function it_throws_exception_when_from_called_twice()
     {
         $this->expectException(RuntimeException::class);
 
@@ -370,7 +369,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_from_called_twice_2(): void
+    public function it_throws_exception_when_from_called_twice_2()
     {
         $this->expectException(RuntimeException::class);
 
@@ -385,7 +384,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_from_called_twice_3(): void
+    public function it_throws_exception_when_from_called_twice_3()
     {
         $this->expectException(RuntimeException::class);
 
@@ -400,7 +399,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_from_called_twice_4(): void
+    public function it_throws_exception_when_from_called_twice_4()
     {
         $this->expectException(RuntimeException::class);
 
@@ -415,7 +414,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_from_called_twice_5(): void
+    public function it_throws_exception_when_from_called_twice_5()
     {
         $this->expectException(RuntimeException::class);
 
@@ -430,7 +429,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_when_called_twice_(): void
+    public function it_throws_exception_when_when_called_twice_()
     {
         $this->expectException(RuntimeException::class);
 
@@ -438,16 +437,16 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
 
         $projection = $this->projectionManager->createReadModelProjection('test_projection', $readModel);
 
-        $projection->when(['foo' => function (): void {
+        $projection->when(['foo' => function () {
         }]);
-        $projection->when(['foo' => function (): void {
+        $projection->when(['foo' => function () {
         }]);
     }
 
     /**
      * @test
      */
-    public function it_throws_exception_when_invalid_handlers_configured(): void
+    public function it_throws_exception_when_invalid_handlers_configured()
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -455,14 +454,14 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
 
         $projection = $this->projectionManager->createReadModelProjection('test_projection', $readModel);
 
-        $projection->when(['1' => function (): void {
+        $projection->when(['1' => function () {
         }]);
     }
 
     /**
      * @test
      */
-    public function it_throws_exception_when_invalid_handlers_configured_2(): void
+    public function it_throws_exception_when_invalid_handlers_configured_2()
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -476,7 +475,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_whenAny_called_twice(): void
+    public function it_throws_exception_when_whenAny_called_twice()
     {
         $this->expectException(RuntimeException::class);
 
@@ -484,16 +483,16 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
 
         $projection = $this->projectionManager->createReadModelProjection('test_projection', $readModel);
 
-        $projection->whenAny(function (): void {
+        $projection->whenAny(function () {
         });
-        $projection->whenAny(function (): void {
+        $projection->whenAny(function () {
         });
     }
 
     /**
      * @test
      */
-    public function it_throws_exception_on_run_when_nothing_configured(): void
+    public function it_throws_exception_on_run_when_nothing_configured()
     {
         $this->expectException(RuntimeException::class);
 
@@ -506,7 +505,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_read_model_using_when(): void
+    public function it_updates_read_model_using_when()
     {
         $this->prepareEventStream('user-123');
 
@@ -519,11 +518,11 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection
             ->fromAll()
             ->when([
-                UserCreated::class => function ($state, Message $event) use ($testCase): void {
+                UserCreated::class => function ($state, Message $event) use ($testCase) {
                     $testCase->assertEquals('user-123', $this->streamName());
                     $this->readModel()->stack('insert', 'name', $event->payload()['name']);
                 },
-                UsernameChanged::class => function ($state, Message $event) use ($testCase): void {
+                UsernameChanged::class => function ($state, Message $event) use ($testCase) {
                     $testCase->assertEquals('user-123', $this->streamName());
                     $this->readModel()->stack('update', 'name', $event->payload()['name']);
 
@@ -544,7 +543,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_read_model_using_when_any(): void
+    public function it_updates_read_model_using_when_any()
     {
         $this->prepareEventStream('user-123');
 
@@ -553,11 +552,11 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', $readModel);
 
         $projection
-            ->init(function (): void {
+            ->init(function () {
                 $this->readModel()->stack('insert', 'name', null);
             })
             ->fromStream('user-123')
-            ->whenAny(function ($state, Message $event): void {
+            ->whenAny(function ($state, Message $event) {
                 $this->readModel()->stack('update', 'name', $event->payload()['name']);
 
                 if ($event->payload()['name'] === 'Sascha') {
@@ -572,7 +571,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_trying_to_run_two_projections_at_the_same_time(): void
+    public function it_throws_exception_when_trying_to_run_two_projections_at_the_same_time()
     {
         $this->expectException(\Prooph\EventStore\Exception\RuntimeException::class);
         $this->expectExceptionMessage('Another projection process is already running');
@@ -585,13 +584,13 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection
             ->fromStream('user-123')
             ->whenAny(
-                function (array $state, Message $event) use ($projectionManager): array {
+                function (array $state, Message $event) use ($projectionManager) {
                     $projection = $projectionManager->createReadModelProjection('test_projection', new ReadModelMock());
 
                     $projection
                         ->fromStream('user-123')
                         ->whenAny(
-                            function (array $state, Message $event): void {
+                            function (array $state, Message $event) {
                             }
                         )
                         ->run();
@@ -603,7 +602,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_projection_and_deletes(): void
+    public function it_updates_projection_and_deletes()
     {
         $this->prepareEventStream('user-123');
 
@@ -614,7 +613,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection
             ->fromStream('user-123')
             ->when([
-                UserCreated::class => function (array $state, UserCreated $event): array {
+                UserCreated::class => function (array $state, UserCreated $event) {
                     $this->readModel()->stack('insert', 'name', $event->payload()['name']);
                     $this->stop();
 
@@ -633,7 +632,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_persists_using_single_handler(): void
+    public function it_persists_using_single_handler()
     {
         $this->prepareEventStream('user-123');
 
@@ -644,11 +643,11 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         ]);
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromCategories('user', 'guest')
-            ->whenAny(function (array $state, Message $event): array {
+            ->whenAny(function (array $state, Message $event) {
                 $state['count']++;
 
                 return $state;
@@ -661,7 +660,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_persists_in_handlers(): void
+    public function it_persists_in_handlers()
     {
         $this->prepareEventStream('user-123');
 
@@ -672,12 +671,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         ]);
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromCategories('user', 'guest')
             ->when([
-                UsernameChanged::class => function (array $state, Message $event): array {
+                UsernameChanged::class => function (array $state, Message $event) {
                     $state['count']++;
 
                     return $state;
@@ -691,7 +690,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_deletes_projection_before_start_when_it_was_deleted_from_outside(): void
+    public function it_deletes_projection_before_start_when_it_was_deleted_from_outside()
     {
         $this->prepareEventStream('user-123');
 
@@ -700,12 +699,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', new ReadModelMock());
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStream('user-123')
             ->when([
-                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes): array {
+                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes) {
                     $state['count']++;
                     $calledTimes++;
 
@@ -734,7 +733,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_deletes_projection_incl_emitted_events_before_start_when_it_was_deleted_from_outside(): void
+    public function it_deletes_projection_incl_emitted_events_before_start_when_it_was_deleted_from_outside()
     {
         $this->prepareEventStream('user-123');
 
@@ -743,12 +742,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', new ReadModelMock());
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStream('user-123')
             ->when([
-                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes): array {
+                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes) {
                     $state['count']++;
                     $calledTimes++;
 
@@ -777,7 +776,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_deletes_projection_during_run_when_it_was_deleted_from_outside(): void
+    public function it_deletes_projection_during_run_when_it_was_deleted_from_outside()
     {
         $this->prepareEventStream('user-123');
 
@@ -787,12 +786,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', new ReadModelMock());
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStream('user-123')
             ->when([
-                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes, $projectionManager): array {
+                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes, $projectionManager) {
                     static $wasReset = false;
 
                     if (! $wasReset) {
@@ -816,7 +815,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_deletes_projection_incl_emitted_events_during_run_when_it_was_deleted_from_outside(): void
+    public function it_deletes_projection_incl_emitted_events_during_run_when_it_was_deleted_from_outside()
     {
         $this->prepareEventStream('user-123');
 
@@ -826,12 +825,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', new ReadModelMock());
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStream('user-123')
             ->when([
-                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes, $projectionManager): array {
+                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes, $projectionManager) {
                     static $wasReset = false;
 
                     if (! $wasReset) {
@@ -855,7 +854,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_resets_projection_before_start_when_it_was_reset_from_outside(): void
+    public function it_resets_projection_before_start_when_it_was_reset_from_outside()
     {
         $this->prepareEventStream('user-123');
 
@@ -864,12 +863,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', new ReadModelMock());
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStream('user-123')
             ->when([
-                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes): array {
+                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes) {
                     $state['count']++;
                     $calledTimes++;
 
@@ -898,7 +897,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_resets_projection_during_run_when_it_was_reset_from_outside(): void
+    public function it_resets_projection_during_run_when_it_was_reset_from_outside()
     {
         $this->prepareEventStream('user-123');
 
@@ -908,12 +907,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', new ReadModelMock());
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStream('user-123')
             ->when([
-                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes, $projectionManager): array {
+                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes, $projectionManager) {
                     static $wasReset = false;
 
                     if (! $wasReset) {
@@ -938,7 +937,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_stops_when_projection_before_start_when_it_was_stopped_from_outside(): void
+    public function it_stops_when_projection_before_start_when_it_was_stopped_from_outside()
     {
         $this->prepareEventStream('user-123');
 
@@ -947,12 +946,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', new ReadModelMock());
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStream('user-123')
             ->when([
-                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes): array {
+                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes) {
                     $state['count']++;
                     $calledTimes++;
 
@@ -981,7 +980,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_stops_projection_during_run_when_it_was_stopped_from_outside(): void
+    public function it_stops_projection_during_run_when_it_was_stopped_from_outside()
     {
         $this->prepareEventStream('user-123');
 
@@ -991,12 +990,12 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $projection = $this->projectionManager->createReadModelProjection('test_projection', new ReadModelMock());
 
         $projection
-            ->init(function (): array {
+            ->init(function () {
                 return ['count' => 0];
             })
             ->fromStream('user-123')
             ->when([
-                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes, $projectionManager): array {
+                UsernameChanged::class => function (array $state, UsernameChanged $event) use (&$calledTimes, $projectionManager) {
                     static $wasReset = false;
 
                     if (! $wasReset) {
@@ -1035,7 +1034,7 @@ abstract class AbstractEventStoreReadModelProjectorTest extends TestCase
         $readModelProjection->reset();
     }
 
-    protected function prepareEventStream(string $name): void
+    protected function prepareEventStream($name)
     {
         $events = [];
         $events[] = UserCreated::with([

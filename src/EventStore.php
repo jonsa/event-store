@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore;
 
@@ -16,11 +15,11 @@ use Iterator;
 
 interface EventStore extends ReadOnlyEventStore
 {
-    public function updateStreamMetadata(StreamName $streamName, array $newMetadata): void;
+    public function updateStreamMetadata(StreamName $streamName, array $newMetadata);
 
-    public function create(Stream $stream): void;
+    public function create(Stream $stream);
 
-    public function appendTo(StreamName $streamName, Iterator $streamEvents): void;
+    public function appendTo(StreamName $streamName, Iterator $streamEvents);
 
-    public function delete(StreamName $streamName): void;
+    public function delete(StreamName $streamName);
 }

@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore;
 
@@ -23,7 +22,7 @@ class ReadOnlyEventStoreWrapperTest extends TestCase
     /**
      * @test
      */
-    public function it_delegates_method_calls_to_internal_event_store(): void
+    public function it_delegates_method_calls_to_internal_event_store()
     {
         $eventStore = $this->prophesize(EventStore::class);
         $eventStore->fetchStreamMetadata(Argument::type(StreamName::class))->willReturn([])->shouldBeCalled();

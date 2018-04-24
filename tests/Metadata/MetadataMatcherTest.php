@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventStore\Metadata;
 
@@ -23,7 +22,7 @@ class MetadataMatcherTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_on_invalid_value_for_in_operator(): void
+    public function it_throws_on_invalid_value_for_in_operator()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Value must be an array for the operator IN');
@@ -35,7 +34,7 @@ class MetadataMatcherTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_on_invalid_value_for_not_in_operator(): void
+    public function it_throws_on_invalid_value_for_not_in_operator()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Value must be an array for the operator NOT_IN.');
@@ -47,7 +46,7 @@ class MetadataMatcherTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_on_invalid_value_for_regex_operator(): void
+    public function it_throws_on_invalid_value_for_regex_operator()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Value must be a string for the regex operator.');
@@ -59,7 +58,7 @@ class MetadataMatcherTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_on_invalid_value_for_equals_operator(): void
+    public function it_throws_on_invalid_value_for_equals_operator()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Value must have a scalar type for the operator EQUALS.');

@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventStore\Util;
 
@@ -29,7 +28,7 @@ class ArrayCache
      */
     private $position = -1;
 
-    public function __construct(int $size)
+    public function __construct($size)
     {
         if ($size <= 0) {
             throw new \InvalidArgumentException('Size must be a positive integer');
@@ -42,7 +41,7 @@ class ArrayCache
     /**
      * @param mixed $value
      */
-    public function rollingAppend($value): void
+    public function rollingAppend($value)
     {
         $this->container[$this->nextPosition()] = $value;
     }
@@ -51,7 +50,7 @@ class ArrayCache
      * @param int $position
      * @return mixed
      */
-    public function get(int $position)
+    public function get($position)
     {
         if ($position >= $this->size
             || $position < 0
@@ -62,17 +61,17 @@ class ArrayCache
         return $this->container[$position];
     }
 
-    public function has($value): bool
+    public function has($value)
     {
         return in_array($value, $this->container, true);
     }
 
-    public function size(): int
+    public function size()
     {
         return $this->size;
     }
 
-    private function nextPosition(): int
+    private function nextPosition()
     {
         return $this->position = ++$this->position % $this->size;
     }
